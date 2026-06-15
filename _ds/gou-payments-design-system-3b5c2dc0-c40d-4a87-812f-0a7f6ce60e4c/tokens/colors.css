@@ -1,0 +1,84 @@
+/* ============================================================
+   GOU Payments — Color System
+   Source: GOU_PAYMENTS_BRANDBOOK V.1 (07 MAY 2025), "Paleta Cromática".
+   Five institutional colors + tonal scales + semantic aliases.
+   ============================================================ */
+:root {
+  /* ---- Brand core (exact brandbook values) ---- */
+  --gou-deep:    #0D1350; /* Azul Profundo Gou  — anchor, dark surfaces, text */
+  --gou-cyan:    #00ACEC; /* Azul Gou           — primary brand accent */
+  --gou-blue:    #0454FC; /* Azul Mid Gou       — interactive / links / focus */
+  --gou-aqua:    #4CDCBC; /* Aqua Gou           — success, positive money-in */
+  --gou-grey:    #BBBCBF; /* Grey Gou           — neutral borders, muted */
+  --gou-black:   #000000;
+
+  /* ---- Deep blue scale (Azul Profundo) ---- */
+  --deep-900: #080B33;
+  --deep-800: #0D1350;
+  --deep-700: #232A66;
+  --deep-600: #3A4180;
+  --deep-500: #565D96;
+  --deep-300: #9DA1C0;
+  --deep-100: #D6D8E6;
+  --deep-50:  #EDEEF4;
+
+  /* ---- Cyan scale (Azul Gou) ---- */
+  --cyan-700: #0079A6;
+  --cyan-600: #0091C6;
+  --cyan-500: #00ACEC;
+  --cyan-400: #4FC4F2;
+  --cyan-300: #8BD8F7;
+  --cyan-200: #BDE9FB;
+  --cyan-100: #E0F5FD;
+  --cyan-50:  #F0FAFE;
+
+  /* ---- Mid blue scale (Azul Mid) ---- */
+  --blue-700: #0036B8;
+  --blue-600: #0344DC;
+  --blue-500: #0454FC;
+  --blue-400: #4A82FD;
+  --blue-300: #88AAFE;
+  --blue-200: #BFD2FF;
+  --blue-100: #E4EBFF;
+  --blue-50:  #F2F6FF;
+
+  /* ---- Aqua scale ---- */
+  --aqua-700: #1C9C82;
+  --aqua-600: #2FBC9D;
+  --aqua-500: #4CDCBC;
+  --aqua-400: #79E6CD;
+  --aqua-300: #A6EFDF;
+  --aqua-200: #CCF6EC;
+  --aqua-100: #E7FBF6;
+
+  /* ---- Neutral / grey scale (cool, biased toward deep blue) ---- */
+  --neutral-0:   #FFFFFF;
+  --neutral-25:  #FBFCFE;
+  --neutral-50:  #F5F7FB;
+  --neutral-100: #ECEFF5;
+  --neutral-200: #DEE2EC;
+  --neutral-300: #C7CCDA;
+  --neutral-400: #9AA1B6;
+  --neutral-500: #6E7689;
+  --neutral-600: #4E5566;
+  --neutral-700: #363C4D;
+  --neutral-800: #21263A;
+  --neutral-900: #11152A;
+
+  /* ---- Semantic: status ---- */
+  --success: #1C9C82;
+  --success-surface: #E7FBF6;
+  --warning: #E8A317;
+  --warning-surface: #FDF3DC;
+  --danger:  #E5484D;
+  --danger-surface: #FDECEC;
+  --info: var(--cyan-500);
+  --info-surface: var(--cyan-100);
+
+  /* ---- Brand gradients ---- */
+  --gou-gradient: linear-gradient(135deg, #00ACEC 0%, #0454FC 48%, #0D1350 100%); /* @kind color */
+  --gou-gradient-soft: linear-gradient(135deg, #4FC4F2 0%, #0454FC 100%); /* @kind color */
+  --gou-gradient-aqua: linear-gradient(135deg, #4CDCBC 0%, #00ACEC 100%); /* @kind color */
+  /* Cash-app-style hero wash for glass surfaces */
+  --gou-wash: radial-gradient(120% 120% at 70% 0%, #4FC4F2 0%, #00ACEC 30%, #0454FC 70%, #0D1350 100%); /* @kind color */
+}

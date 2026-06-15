@@ -1,0 +1,49 @@
+/* ============================================================
+   GOU Payments — Typography Tokens
+   Montserrat throughout. Display/titulares lean SemiBold–Black;
+   body Regular/Light. Tight tracking on large display sizes.
+   ============================================================ */
+:root {
+  --font-sans: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Montserrat", system-ui, sans-serif;
+
+  /* ---- Weights ---- */
+  --fw-light: 300; /* @kind font */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium: 500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold: 700; /* @kind font */
+  --fw-extrabold: 800; /* @kind font */
+  --fw-black: 900; /* @kind font */
+
+  /* ---- Type scale (rem @ 16px root) ---- */
+  --fs-display-xl: 4.5rem;   /* 72 — hero numerals / big statements */
+  --fs-display-lg: 3.5rem;   /* 56 */
+  --fs-display-md: 2.75rem;  /* 44 */
+  --fs-h1: 2.25rem;          /* 36 */
+  --fs-h2: 1.75rem;          /* 28 */
+  --fs-h3: 1.375rem;         /* 22 */
+  --fs-h4: 1.125rem;         /* 18 */
+  --fs-body-lg: 1.0625rem;   /* 17 */
+  --fs-body: 0.9375rem;      /* 15 */
+  --fs-body-sm: 0.8125rem;   /* 13 */
+  --fs-caption: 0.75rem;     /* 12 */
+  --fs-overline: 0.6875rem;  /* 11 */
+
+  /* ---- Line heights ---- */
+  --lh-tight: 1.05; /* @kind other */
+  --lh-snug: 1.2; /* @kind other */
+  --lh-normal: 1.45; /* @kind other */
+  --lh-relaxed: 1.6; /* @kind other */
+
+  /* ---- Letter spacing ---- */
+  --ls-tighter: -0.03em;  /* display numerals */
+  --ls-tight: -0.015em;   /* headings */
+  --ls-normal: 0; /* @kind other */
+  --ls-wide: 0.04em; /* @kind other */
+  --ls-overline: 0.14em;  /* uppercase labels / titulares */
+
+  /* ---- Numeric / money figures ---- */
+  --font-tnum: "Montserrat", system-ui, sans-serif;
+  --feat-tnum: "tnum" 1, "lnum" 1; /* @kind other */
+}

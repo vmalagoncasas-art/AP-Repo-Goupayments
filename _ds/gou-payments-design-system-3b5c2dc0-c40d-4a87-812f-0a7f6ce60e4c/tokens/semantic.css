@@ -1,0 +1,53 @@
+/* ============================================================
+   GOU Payments — Semantic Aliases
+   Map raw palette to roles. Consume THESE in product UI, not raw
+   scale steps, so theming stays consistent across desk + mobile.
+   ============================================================ */
+:root {
+  /* ---- Text ---- */
+  --text-strong:   var(--deep-800);   /* headings, key figures */
+  --text-body:     var(--neutral-800);
+  --text-muted:    var(--neutral-500);
+  --text-subtle:   var(--neutral-400);
+  --text-inverse:  var(--neutral-0);
+  --text-link:     var(--blue-500);
+  --text-on-brand: var(--neutral-0);
+
+  /* ---- Surfaces ---- */
+  --surface-page:    var(--neutral-50);
+  --surface-card:    var(--neutral-0);
+  --surface-sunken:  var(--neutral-100);
+  --surface-hover:   var(--neutral-50);
+  --surface-deep:    var(--deep-800);   /* dark sections / sidebars */
+  --surface-brand:   var(--cyan-500);
+  --surface-accent:  var(--blue-500);
+
+  /* Glassmorphism surfaces (signature GOU treatment) */
+  --glass-fill:      rgba(255, 255, 255, 0.55);
+  --glass-fill-strong: rgba(255, 255, 255, 0.72);
+  --glass-fill-dark: rgba(13, 19, 80, 0.32);
+  --glass-border:    rgba(255, 255, 255, 0.6);
+  --glass-blur:      18px;
+
+  /* ---- Borders / dividers ---- */
+  --border-subtle: var(--neutral-200);
+  --border-default: var(--neutral-300);
+  --border-strong: var(--neutral-400);
+  --border-brand:  var(--cyan-500);
+  --focus-ring:    var(--blue-500);
+
+  /* ---- Interactive (buttons, controls) ---- */
+  --action-primary:        var(--blue-500);
+  --action-primary-hover:  var(--blue-600);
+  --action-primary-active: var(--blue-700);
+  --action-brand:          var(--cyan-500);
+  --action-brand-hover:    var(--cyan-600);
+  --action-on:             var(--neutral-0);
+  --action-secondary-fill: var(--neutral-0);
+  --action-secondary-border: var(--neutral-300);
+
+  /* ---- Money semantics (fintech) ---- */
+  --money-in:  var(--aqua-700);   /* recaudos / credits */
+  --money-out: var(--deep-700);   /* pagos / debits */
+  --money-pending: var(--warning);
+}
