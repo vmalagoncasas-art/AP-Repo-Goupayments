@@ -398,8 +398,9 @@
               </div>
               <sc-if value="{{ isModule }}">
                 <div style="display:flex;gap:10px;align-items:center;">
-                  <button style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid var(--border-default);border-radius:999px;cursor:pointer;background:var(--surface-card);color:var(--text-strong);font-family:var(--font-sans);font-weight:500;font-size:13px;" style-hover="background:var(--surface-hover);"><x-import component-from-global-scope="GouIcon" icon="download" size="17" hint-size="17px,17px"></x-import>Exportar</button>
-                  <button onClick="{{ openCreate }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border:none;border-radius:999px;cursor:pointer;background:var(--action-primary);color:#fff;font-family:var(--font-sans);font-weight:500;font-size:13px;" style-hover="background:var(--action-primary-hover);"><x-import component-from-global-scope="GouIcon" icon="{{ moduleCtaIcon }}" size="16" stroke-width="2.2" hint-size="16px,16px"></x-import>{{ moduleCta }}</button>
+                  <sc-if value="{{ showModuleExport }}"><button style="display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid var(--border-default);border-radius:999px;cursor:pointer;background:var(--surface-card);color:var(--text-strong);font-family:var(--font-sans);font-weight:500;font-size:13px;" style-hover="background:var(--surface-hover);"><x-import component-from-global-scope="GouIcon" icon="download" size="17" hint-size="17px,17px"></x-import>Exportar</button></sc-if>
+                  <sc-if value="{{ isTx }}"><button onClick="{{ txGoCargar }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border:none;border-radius:999px;cursor:pointer;background:var(--action-primary);color:#fff;font-family:var(--font-sans);font-weight:500;font-size:13px;" style-hover="background:var(--action-primary-hover);"><x-import component-from-global-scope="GouIcon" icon="upload" size="16" stroke-width="2.1" hint-size="16px,16px"></x-import>Cargar archivo</button></sc-if>
+                  <sc-if value="{{ notTx }}"><button onClick="{{ openCreate }}" style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border:none;border-radius:999px;cursor:pointer;background:var(--action-primary);color:#fff;font-family:var(--font-sans);font-weight:500;font-size:13px;" style-hover="background:var(--action-primary-hover);"><x-import component-from-global-scope="GouIcon" icon="{{ moduleCtaIcon }}" size="16" stroke-width="2.2" hint-size="16px,16px"></x-import>{{ moduleCta }}</button></sc-if>
                 </div>
               </sc-if>
               <sc-if value="{{ pmListView }}">
@@ -581,7 +582,7 @@
                             </span>
                             <div style="min-width:0;">
                               <div style="font-weight:500;font-size:14px;color:#111111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.nombre }}</div>
-                              <div style="font-size:12px;color:var(--text-muted);margin-top:1px;">Pago a Terceros Múltiple</div>
+                              <div style="font-size:12px;color:var(--text-muted);margin-top:1px;">{{ r.tipo }}</div>
                             </div>
                             <div style="font-size:13px;color:var(--text-body);">{{ r.fecha }}<span style="display:block;font-size:12px;color:var(--text-subtle);">{{ r.hora }}</span></div>
                             <div style="font-family:var(--font-tnum);font-weight:600;font-size:14px;color:#111111;font-variant-numeric:tabular-nums;">{{ r.valor }}</div>
@@ -598,18 +599,18 @@
                         </sc-for>
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 16px;">
                           <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#71717A;">
-                            <span>Showing</span>
+                            <span>Mostrando</span>
                             <span style="display:inline-flex;align-items:center;height:30px;padding:0 10px;border-radius:8px;background:#fff;color:#18181B;font-size:13px;font-weight:500;">{{ pmShowing }}</span>
-                            <span>of {{ pmTotalRows }} results</span>
+                            <span>de {{ pmTotalRows }} resultados</span>
                           </div>
                           <div style="display:flex;align-items:center;gap:4px;">
-                            <button onClick="{{ pmPrev.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#71717A;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;color:#18181B;"><x-import component-from-global-scope="GouIcon" icon="chevron-left" size="15" hint-size="15px,15px"></x-import>Previous</button>
+                            <button onClick="{{ pmPrev.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#71717A;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;color:#18181B;"><x-import component-from-global-scope="GouIcon" icon="chevron-left" size="15" hint-size="15px,15px"></x-import>Anterior</button>
                             <sc-for list="{{ pmPages }}" as="p" hint-placeholder-count="3">
                               <sc-if value="{{ p.isEllipsis }}"><span style="width:24px;text-align:center;color:#71717A;">…</span></sc-if>
                               <sc-if value="{{ p.isCurrent }}"><button onClick="{{ p.onClick }}" style="width:32px;height:32px;border:none;border-radius:8px;cursor:pointer;background:#fff;color:#18181B;font-family:var(--font-sans);font-size:13px;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06);">{{ p.label }}</button></sc-if>
                               <sc-if value="{{ p.notCurrent }}"><button onClick="{{ p.onClick }}" style="width:32px;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent;color:#71717A;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;color:#18181B;">{{ p.label }}</button></sc-if>
                             </sc-for>
-                            <button onClick="{{ pmNext.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#18181B;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;">Next<x-import component-from-global-scope="GouIcon" icon="chevron-right" size="15" hint-size="15px,15px"></x-import></button>
+                            <button onClick="{{ pmNext.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#18181B;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;">Siguiente<x-import component-from-global-scope="GouIcon" icon="chevron-right" size="15" hint-size="15px,15px"></x-import></button>
                           </div>
                         </div>
                       </div>
@@ -661,6 +662,14 @@
                     <div style="display:flex;flex-direction:column;gap:16px;margin-top:18px;">
                       <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" label="Tipo de archivo" options="{{ pmTipoOptions }}" placeholder="Selecciona el tipo" value="{{ pmTipo }}" onChange="{{ pmSetTipo }}" hint-size="100%,72px"></x-import>
                       <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Input" label="Nombre del archivo" placeholder="Ej. nómina junio — quincena 2" value="{{ pmNombre }}" onChange="{{ pmSetNombre }}" hint-size="100%,72px"></x-import>
+                      <div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-body);margin-bottom:7px;">Programar archivo</label>
+                        <div style="position:relative;">
+                          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-subtle);pointer-events:none;display:inline-flex;"><x-import component-from-global-scope="GouIcon" icon="calendar" size="17" hint-size="17px,17px"></x-import></span>
+                          <input type="date" value="{{ pmFechaVal }}" onChange="{{ pmSetFecha }}" min="2026-06-16" style="width:100%;height:48px;padding:0 14px 0 42px;border:1.5px solid var(--border-subtle);border-radius:14px;background:#fff;color:var(--text-strong);font-family:var(--font-sans);font-size:15px;outline:none;" />
+                        </div>
+                        <div style="font-size:12px;color:var(--text-subtle);margin-top:6px;">Solo días hábiles. Si lo dejas vacío, se procesa hoy.</div>
+                      </div>
                       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0;">
                         <div>
                           <div style="font-weight:600;font-size:14px;color:var(--text-strong);">Encriptación PGP</div>
@@ -692,13 +701,13 @@
                         <span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:var(--blue-100);color:var(--blue-600);flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="file-text" size="21" hint-size="21px,21px"></x-import></span>
                         <div style="min-width:0;">
                           <div style="font-weight:500;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ confirmNombre }}</div>
-                          <div style="font-size:12px;color:var(--text-muted);">Pago a Terceros Múltiple</div>
+                          <div style="font-size:12px;color:var(--text-muted);">{{ confirmTipo }}</div>
                         </div>
                       </div>
                       <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Badge" tone="success" hint-size="auto,24px"><x-import component-from-global-scope="GouIcon" icon="check-circle" size="13" hint-size="13px,13px"></x-import>Cargado</x-import>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 32px;">
-                      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Tipo de archivo</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">Pago a Terceros Múltiple</span></div>
+                      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Tipo de archivo</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ confirmTipo }}</span></div>
                       <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Nro. registros</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ confirmRegistros }}</span></div>
                       <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Fecha de carga</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ confirmFecha }}</span></div>
                       <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Hora de carga</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ confirmHora }}</span></div>
@@ -725,14 +734,14 @@
                         <span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:var(--blue-100);color:var(--blue-600);flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="file-text" size="21" hint-size="21px,21px"></x-import></span>
                         <div style="min-width:0;">
                           <div style="font-weight:500;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ detailNombre }}</div>
-                          <div style="font-size:12px;color:var(--text-muted);">Pago a Terceros Múltiple</div>
+                          <div style="font-size:12px;color:var(--text-muted);">{{ detailTipo }}</div>
                         </div>
                       </div>
                       <sc-if value="{{ detailApproved }}"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Badge" tone="success" hint-size="auto,24px"><x-import component-from-global-scope="GouIcon" icon="check-circle" size="13" hint-size="13px,13px"></x-import>Aprobado</x-import></sc-if>
                       <sc-if value="{{ detailRejected }}"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Badge" tone="danger" hint-size="auto,24px"><x-import component-from-global-scope="GouIcon" icon="x-circle" size="13" hint-size="13px,13px"></x-import>Rechazado</x-import></sc-if>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 32px;">
-                      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Tipo de archivo</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">Pago a Terceros Múltiple</span></div>
+                      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Tipo de archivo</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ detailTipo }}</span></div>
                       <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Nro. registros</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ detailRegistros }}</span></div>
                       <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Fecha de carga</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ detailFecha }}</span></div>
                       <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(13,19,80,.05);padding-bottom:10px;"><span style="font-size:13px;color:var(--text-muted);">Hora de carga</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ detailHora }}</span></div>
@@ -749,6 +758,65 @@
             <!-- ===== MÓDULO GENÉRICO ===== -->
             <sc-if value="{{ isModule }}">
               <div class="gou-stage" style="display:flex;flex-direction:column;gap:16px;">
+                <sc-if value="{{ isMovimientos }}">
+                  <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Card" padding="lg" hint-size="100%,520px">
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+                      <div style="flex:1;min-width:220px;max-width:320px;"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Input" size="sm" placeholder="Buscar beneficiario o identificación…" value="{{ movQuery }}" onChange="{{ movSetQuery }}" hint-size="100%,40px"></x-import></div>
+                      <div style="width:184px;"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" size="sm" options="{{ movPeriodoOpts }}" placeholder="Período" value="{{ movPeriodoVal }}" onChange="{{ movSetPeriodo }}" hint-size="100%,40px"></x-import></div>
+                      <div style="width:210px;"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" size="sm" options="{{ movTipoOpts }}" placeholder="Tipo de pago" value="{{ movTipoVal }}" onChange="{{ movSetTipo }}" hint-size="100%,40px"></x-import></div>
+                      <div style="width:168px;"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" size="sm" options="{{ movEstadoOpts }}" placeholder="Estado" value="{{ movEstadoVal }}" onChange="{{ movSetEstado }}" hint-size="100%,40px"></x-import></div>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
+                      <span style="font-size:13px;color:var(--text-muted);"><strong style="color:var(--text-strong);font-weight:600;">{{ movCount }}</strong> {{ movCountWord }}</span>
+                      <sc-if value="{{ movHasFilters }}"><button onClick="{{ movClear }}" style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:none;border-radius:999px;background:transparent;cursor:pointer;color:var(--text-link);font-family:var(--font-sans);font-weight:500;font-size:13px;" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="x" size="14" hint-size="14px,14px"></x-import>Limpiar filtros</button></sc-if>
+                    </div>
+                    <sc-if value="{{ movHasRows }}">
+                    <div style="border-radius:20px;background:#EFEFF0;padding:4px;">
+                      <div style="display:grid;grid-template-columns:1.5fr 1.7fr 1fr 0.9fr 1fr 100px;gap:12px;padding:10px 16px;font-size:12px;font-weight:500;color:#71717A;">
+                        <span>Tipo de pago</span><span>Beneficiario</span><span style="text-align:right;">Valor</span><span>Fecha</span><span>Estado</span><span style="text-align:right;">Acciones</span>
+                      </div>
+                      <sc-for list="{{ movRows }}" as="r" hint-placeholder-count="6">
+                        <div style="display:grid;grid-template-columns:1.5fr 1.7fr 1fr 0.9fr 1fr 100px;gap:12px;align-items:center;padding:13px 16px;border-radius:16px;background:#fff;margin-bottom:4px;transition:background .14s;" style-hover="background:rgba(0,172,236,.06);">
+                          <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                            <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:#D6EAFF;color:#0D1350;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="{{ r.tipoIcon }}" size="16" hint-size="16px,16px"></x-import></span>
+                            <span style="font-weight:500;font-size:13.5px;color:#111111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.tipo }}</span>
+                          </div>
+                          <div style="min-width:0;">
+                            <div style="font-weight:500;font-size:14px;color:#111111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.beneficiario }}</div>
+                            <div style="font-size:12px;color:var(--text-muted);margin-top:1px;">Id. {{ r.identificacion }}</div>
+                          </div>
+                          <div style="font-family:var(--font-tnum);font-weight:600;font-size:14px;color:var(--text-strong);text-align:right;font-variant-numeric:tabular-nums;">{{ r.valor }}</div>
+                          <div style="font-size:13px;color:var(--text-body);">{{ r.fecha }}</div>
+                          <div><span style="display:inline-flex;align-items:center;gap:7px;height:25px;padding:0 11px;border-radius:999px;background:var(--surface-sunken);color:var(--text-body);font-size:12px;font-weight:500;"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.estadoDot }};flex-shrink:0;"></span>{{ r.estadoLabel }}</span></div>
+                          <div style="position:relative;display:flex;align-items:center;justify-content:flex-end;gap:2px;">
+                            <button onClick="{{ r.onAlert }}" aria-label="Ver detalle" title="Ver detalle" style="display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);" style-hover="background:var(--surface-sunken);color:var(--blue-600);"><x-import component-from-global-scope="GouIcon" icon="eye" size="16" hint-size="16px,16px"></x-import></button>
+                            <sc-if value="{{ r.isQr }}"><button onClick="{{ r.onVerQR }}" aria-label="Ver QR" title="Ver QR" style="display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);" style-hover="background:var(--surface-sunken);color:var(--blue-600);"><x-import component-from-global-scope="GouIcon" icon="qr-code" size="16" hint-size="16px,16px"></x-import></button></sc-if>
+                            <button onClick="{{ r.menu }}" aria-label="Más acciones" title="Más acciones" style="display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);" style-hover="background:var(--surface-sunken);color:var(--text-strong);"><x-import component-from-global-scope="GouIcon" icon="more-vertical" size="16" hint-size="16px,16px"></x-import></button>
+                            <sc-if value="{{ r.menuOpen }}">
+                              <div onClick="{{ movCloseMenu }}" style="position:fixed;inset:0;z-index:40;"></div>
+                              <div onClick="{{ stop }}" style="position:absolute;right:0;top:calc(100% + 4px);z-index:50;min-width:194px;background:#fff;border:1px solid var(--border-subtle);border-radius:14px;box-shadow:var(--shadow-lg);padding:6px;display:flex;flex-direction:column;gap:1px;">
+                                <button onClick="{{ r.onRefresh }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--text-body);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="refresh-cw" size="15" hint-size="15px,15px"></x-import>Actualizar estado</button>
+                                <button onClick="{{ r.onEdit }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--text-body);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="pencil" size="15" hint-size="15px,15px"></x-import>Editar</button>
+                                <button onClick="{{ r.onDoc }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--text-body);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="download" size="15" hint-size="15px,15px"></x-import>Descargar soporte</button>
+                                <button onClick="{{ r.onBlock }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--danger);" style-hover="background:var(--danger-surface);"><x-import component-from-global-scope="GouIcon" icon="ban" size="15" hint-size="15px,15px"></x-import>Anular</button>
+                              </div>
+                            </sc-if>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    </sc-if>
+                    <sc-if value="{{ movRowsEmpty }}">
+                      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:48px 20px;text-align:center;">
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:20px;background:var(--surface-sunken);color:var(--text-subtle);"><x-import component-from-global-scope="GouIcon" icon="search-x" size="28" hint-size="28px,28px"></x-import></span>
+                        <div style="font-size:14px;font-weight:600;color:var(--text-strong);">Sin movimientos</div>
+                        <div style="max-width:380px;color:var(--text-muted);font-size:14px;">No encontramos movimientos con estos filtros. Prueba con otro período, tipo o estado, o limpia los filtros.</div>
+                        <sc-if value="{{ movHasFilters }}"><button onClick="{{ movClear }}" style="display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border:1px solid var(--border-default);border-radius:999px;background:#fff;cursor:pointer;color:var(--text-strong);font-family:var(--font-sans);font-weight:500;font-size:13px;" style-hover="background:var(--surface-hover);">Limpiar filtros</button></sc-if>
+                      </div>
+                    </sc-if>
+                  </x-import>
+                </sc-if>
+                <sc-if value="{{ moduleMain }}">
                 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
                   <sc-for list="{{ moduleStats }}" as="k" hint-placeholder-count="3">
                     <div style="position:relative;overflow:hidden;border-radius:16px;background:{{ k.bg }};padding:20px;min-height:150px;display:flex;flex-direction:column;">
@@ -788,18 +856,18 @@
                       <!-- paginación -->
                       <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 16px;">
                         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#71717A;">
-                          <span>Showing</span>
+                          <span>Mostrando</span>
                           <span style="display:inline-flex;align-items:center;height:30px;padding:0 10px;border-radius:8px;background:#fff;color:#18181B;font-size:13px;font-weight:500;">{{ moduleShowing }}</span>
-                          <span>of {{ moduleTotalRows }} results</span>
+                          <span>de {{ moduleTotalRows }} resultados</span>
                         </div>
                         <div style="display:flex;align-items:center;gap:4px;">
-                          <button onClick="{{ modulePrev.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#71717A;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;color:#18181B;"><x-import component-from-global-scope="GouIcon" icon="chevron-left" size="15" hint-size="15px,15px"></x-import>Previous</button>
+                          <button onClick="{{ modulePrev.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#71717A;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;color:#18181B;"><x-import component-from-global-scope="GouIcon" icon="chevron-left" size="15" hint-size="15px,15px"></x-import>Anterior</button>
                           <sc-for list="{{ modulePages }}" as="p" hint-placeholder-count="6">
                             <sc-if value="{{ p.isEllipsis }}"><span style="width:24px;text-align:center;color:#71717A;">…</span></sc-if>
                             <sc-if value="{{ p.isCurrent }}"><button onClick="{{ p.onClick }}" style="width:32px;height:32px;border:none;border-radius:8px;cursor:pointer;background:#fff;color:#18181B;font-family:var(--font-sans);font-size:13px;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06);">{{ p.label }}</button></sc-if>
                             <sc-if value="{{ p.notCurrent }}"><button onClick="{{ p.onClick }}" style="width:32px;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent;color:#71717A;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;color:#18181B;">{{ p.label }}</button></sc-if>
                           </sc-for>
-                          <button onClick="{{ moduleNext.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#18181B;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;">Next<x-import component-from-global-scope="GouIcon" icon="chevron-right" size="15" hint-size="15px,15px"></x-import></button>
+                          <button onClick="{{ moduleNext.onClick }}" style="display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:#18181B;font-family:var(--font-sans);font-size:13px;" style-hover="background:#fff;">Siguiente<x-import component-from-global-scope="GouIcon" icon="chevron-right" size="15" hint-size="15px,15px"></x-import></button>
                         </div>
                       </div>
                     </div>
@@ -814,6 +882,110 @@
                     </div>
                   </sc-if>
                 </x-import>
+                </sc-if>
+
+                <!-- ===== QR: CARGAR ARCHIVO ===== -->
+                <sc-if value="{{ qrCargarView }}">
+                  <button onClick="{{ qrCancelCargar }}" style="display:inline-flex;align-items:center;gap:7px;align-self:flex-start;border:none;background:transparent;cursor:pointer;color:var(--text-muted);font-family:var(--font-sans);font-weight:600;font-size:13px;padding:0;"><x-import component-from-global-scope="GouIcon" icon="arrow-left" size="16" hint-size="16px,16px"></x-import>Transacciones › Carga de Archivos</button>
+                  <div style="display:flex;gap:11px;padding:14px 16px;border-radius:12px;background:var(--warning-surface);max-width:760px;">
+                    <span style="color:#B8860B;flex-shrink:0;display:inline-flex;"><x-import component-from-global-scope="GouIcon" icon="alert-triangle" size="19" hint-size="19px,19px"></x-import></span>
+                    <div style="font-size:13px;color:#7A5B12;line-height:1.45;">Estimado usuario, para programar su archivo sólo tiene disponible para seleccionar días hábiles en el calendario.</div>
+                  </div>
+                  <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Card" padding="lg" hint-size="100%,auto" style="max-width:760px;">
+                    <h3 style="margin:0 0 18px;font-family:var(--font-sans);font-weight:700;font-size:17px;color:#000;">Cargar Archivo</h3>
+                    <div style="display:flex;flex-direction:column;gap:16px;">
+                      <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" label="Tipo Archivo" options="{{ qrTipoOpts }}" placeholder="Seleccione" value="{{ qrTipoVal }}" onChange="{{ qrSetTipo }}" hint-size="100%,auto"></x-import>
+                      <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Input" label="Nombre Archivo" placeholder="Nombre del archivo" value="{{ qrNombreVal }}" onChange="{{ qrSetNombre }}" hint-size="100%,auto"></x-import>
+                      <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" label="Método de Encripción" options="{{ qrEncripOpts }}" placeholder="Seleccione" value="{{ qrEncripVal }}" onChange="{{ qrSetEncrip }}" hint-size="100%,auto"></x-import>
+                      <div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-body);margin-bottom:7px;">Programar Archivo</label>
+                        <div style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1.5px solid var(--border-subtle);border-radius:14px;background:#fff;color:var(--text-strong);font-size:15px;">{{ qrFechaVal }}<x-import component-from-global-scope="GouIcon" icon="calendar" size="17" hint-size="17px,17px"></x-import></div>
+                      </div>
+                      <div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-body);margin-bottom:7px;">Archivo a Cargar</label>
+                        <input id="qr-file-input" type="file" onChange="{{ qrPickFile }}" style="display:none;" />
+                        <sc-if value="{{ qrNoFile }}">
+                          <div onClick="{{ qrBrowse }}" onDrop="{{ qrDrop }}" onDragOver="{{ qrDragOver }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:34px 20px;border:2px dashed var(--border-default);border-radius:18px;cursor:pointer;text-align:center;background:var(--surface-sunken);transition:border-color .2s,background .2s;" style-hover="border-color:var(--blue-400);background:var(--blue-50);">
+                            <span style="color:var(--blue-500);display:inline-flex;"><x-import component-from-global-scope="GouIcon" icon="cloud-upload" size="30" hint-size="30px,30px"></x-import></span>
+                            <div style="font-size:14px;color:var(--text-body);">Arrastra y suelta el archivo, o <span style="color:var(--text-link);font-weight:600;">examinar</span></div>
+                            <div style="font-size:12px;color:var(--text-subtle);">CSV, XLS, XLSX · máx 10 MB</div>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ qrHasFile }}">
+                          <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(16,19,80,.04),0 4px 12px rgba(16,19,80,.05);border-radius:10px;background:var(--surface-card);">
+                            <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:var(--blue-100);color:var(--blue-600);flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="file-text" size="20" hint-size="20px,20px"></x-import></span>
+                            <span style="flex:1;min-width:0;font-weight:500;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ qrArchivoVal }}</span>
+                            <button onClick="{{ qrClearFile }}" title="Quitar" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;border-radius:9px;cursor:pointer;background:transparent;color:var(--text-muted);" style-hover="background:var(--danger-surface);color:var(--danger);"><x-import component-from-global-scope="GouIcon" icon="trash-2" size="17" hint-size="17px,17px"></x-import></button>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:22px;">
+                      <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="secondary" size="sm" onClick="{{ qrCancelCargar }}" hint-size="auto,44px">Cancelar</x-import>
+                      <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="primary" size="sm" onClick="{{ qrCargar }}" hint-size="auto,44px"><x-import component-from-global-scope="GouIcon" icon="upload" size="16" hint-size="16px,16px"></x-import>Cargar Archivo</x-import>
+                    </div>
+                  </x-import>
+                </sc-if>
+
+                <!-- ===== QR: RESULTADO ===== -->
+                <sc-if value="{{ qrResultadoView }}">
+                  <h3 style="margin:0;font-family:var(--font-sans);font-weight:700;font-size:17px;color:#000;">Resultado</h3>
+                  <div style="display:flex;gap:12px;padding:18px 20px;border-radius:14px;background:var(--surface-sunken);max-width:760px;">
+                    <span style="color:var(--blue-600);flex-shrink:0;display:inline-flex;"><x-import component-from-global-scope="GouIcon" icon="lightbulb" size="22" hint-size="22px,22px"></x-import></span>
+                    <div style="font-size:14px;color:var(--text-body);line-height:1.5;">Su archivo se encuentra en proceso de carga. Por favor valide el <strong>estado</strong> del archivo y realice el proceso de <strong>envío</strong>.</div>
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;max-width:760px;">
+                    <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="primary" size="sm" onClick="{{ qrFinalizar }}" hint-size="auto,44px"><x-import component-from-global-scope="GouIcon" icon="check-circle" size="16" hint-size="16px,16px"></x-import>Finalizar</x-import>
+                  </div>
+                </sc-if>
+
+                <!-- ===== QR: TABLA DE REGISTROS ===== -->
+                <sc-if value="{{ qrTablaView }}">
+                  <div style="display:flex;gap:11px;padding:12px 16px;border-radius:12px;background:var(--warning-surface);align-items:center;justify-content:space-between;">
+                    <div style="display:flex;gap:10px;align-items:center;"><span style="color:#B8860B;display:inline-flex;"><x-import component-from-global-scope="GouIcon" icon="alert-triangle" size="18" hint-size="18px,18px"></x-import></span><span style="font-size:12.5px;color:#7A5B12;">Estimado Usuario le quedan 9999 de 9999 modificaciones para realizar sobre este archivo.</span></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <div style="width:190px;" class="gou-filter-sm"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" size="sm" options="{{ qrFiltroEstadoOpts }}" placeholder="Estado" value="{{ qrFiltroEstadoVal }}" onChange="{{ qrSetFiltroEstado }}" hint-size="100%,40px"></x-import></div>
+                    <div style="width:210px;" class="gou-filter-sm"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" size="sm" options="{{ qrFiltroValorOpts }}" placeholder="Valor a pagar" value="{{ qrFiltroValorVal }}" onChange="{{ qrSetFiltroValor }}" hint-size="100%,40px"></x-import></div>
+                    <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="secondary" size="sm" onClick="{{ qrFiltrar }}" hint-size="auto,40px"><x-import component-from-global-scope="GouIcon" icon="search" size="15" hint-size="15px,15px"></x-import>Filtrar</x-import>
+                  </div>
+                  <div style="border-radius:20px;background:#EFEFF0;padding:4px;">
+                    <div style="display:grid;grid-template-columns:1.5fr 1.7fr 1fr 0.9fr 1fr 100px;gap:12px;padding:10px 16px;font-size:12px;font-weight:500;color:#71717A;">
+                      <span>Tipo de pago</span><span>Beneficiario</span><span style="text-align:right;">Valor</span><span>Fecha</span><span>Estado</span><span style="text-align:right;">Acciones</span>
+                    </div>
+                    <sc-for list="{{ qrRows }}" as="r" hint-placeholder-count="4">
+                      <div style="display:grid;grid-template-columns:1.5fr 1.7fr 1fr 0.9fr 1fr 100px;gap:12px;align-items:center;padding:13px 16px;border-radius:16px;background:#fff;margin-bottom:4px;transition:background .14s;" style-hover="background:rgba(0,172,236,.06);">
+                        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:#D6EAFF;color:#0D1350;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="{{ r.tipoIcon }}" size="16" hint-size="16px,16px"></x-import></span>
+                          <span style="font-weight:500;font-size:13.5px;color:#111111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.tipo }}</span>
+                        </div>
+                        <div style="min-width:0;">
+                          <div style="font-weight:500;font-size:14px;color:#111111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.beneficiario }}</div>
+                          <div style="font-size:12px;color:var(--text-muted);margin-top:1px;">Id. {{ r.identificacion }}</div>
+                        </div>
+                        <div style="font-family:var(--font-tnum);font-weight:600;font-size:14px;color:var(--text-strong);text-align:right;font-variant-numeric:tabular-nums;">{{ r.valor }}</div>
+                        <div style="font-size:13px;color:var(--text-body);">{{ r.fecha }}</div>
+                        <div><span style="display:inline-flex;align-items:center;gap:7px;height:25px;padding:0 11px;border-radius:999px;background:var(--surface-sunken);color:var(--text-body);font-size:12px;font-weight:500;"><span style="width:6px;height:6px;border-radius:50%;background:var(--aqua-500);flex-shrink:0;"></span>{{ r.estadoLabel }}</span></div>
+                        <div style="position:relative;display:flex;align-items:center;justify-content:flex-end;gap:2px;">
+                          <button onClick="{{ qrVerQR }}" aria-label="Ver QR" title="Ver QR" style="display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);" style-hover="background:var(--surface-sunken);color:var(--blue-600);"><x-import component-from-global-scope="GouIcon" icon="qr-code" size="16" hint-size="16px,16px"></x-import></button>
+                          <button onClick="{{ qrReenviar }}" aria-label="Reenviar QR" title="Reenviar el QR al beneficiario" style="display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);" style-hover="background:var(--surface-sunken);color:var(--blue-600);"><x-import component-from-global-scope="GouIcon" icon="rotate-cw" size="16" hint-size="16px,16px"></x-import></button>
+                          <button onClick="{{ r.menu }}" aria-label="Más acciones" title="Más acciones" style="display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);" style-hover="background:var(--surface-sunken);color:var(--text-strong);"><x-import component-from-global-scope="GouIcon" icon="more-vertical" size="16" hint-size="16px,16px"></x-import></button>
+                          <sc-if value="{{ r.menuOpen }}">
+                            <div onClick="{{ qrCloseRowMenu }}" style="position:fixed;inset:0;z-index:40;"></div>
+                            <div onClick="{{ stop }}" style="position:absolute;right:0;top:calc(100% + 4px);z-index:50;min-width:212px;background:#fff;border:1px solid var(--border-subtle);border-radius:14px;box-shadow:var(--shadow-lg);padding:6px;display:flex;flex-direction:column;gap:1px;">
+                              <button onClick="{{ qrEditar }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--text-body);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="pencil" size="15" hint-size="15px,15px"></x-import>Editar registro</button>
+                              <button onClick="{{ qrDocInvalido }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--text-body);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="alert-triangle" size="15" hint-size="15px,15px"></x-import>Ver documento cargado</button>
+                              <button onClick="{{ qrEliminarBenef }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--text-body);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="file-x" size="15" hint-size="15px,15px"></x-import>Eliminar beneficiario</button>
+                              <button onClick="{{ qrAnularOpen }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border:none;border-radius:9px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13px;color:var(--danger);" style-hover="background:var(--danger-surface);"><x-import component-from-global-scope="GouIcon" icon="ban" size="15" hint-size="15px,15px"></x-import>Anular QR</button>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </div>
+                    </sc-for>
+                    <div style="padding:12px 16px;font-size:12.5px;color:var(--text-muted);">Mostrando registros 1 al 10 de un total de 40</div>
+                  </div>
+                </sc-if>
+
               </div>
             </sc-if>
 
@@ -943,6 +1115,42 @@
               <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="secondary" size="sm" full-width="{{ true }}" onClick="{{ closeCreate }}" hint-size="100%,44px">Cancelar</x-import>
               <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="primary" size="sm" full-width="{{ true }}" onClick="{{ submitCreate }}" hint-size="100%,44px">Crear y enviar</x-import>
             </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== QR (global): MODAL VER QR — visible en cualquier ruta (masivos, movimientos, transacciones) ===== -->
+    <sc-if value="{{ qrModalQRDesk }}">
+      <div onClick="{{ qrCloseModal }}" style="position:fixed;inset:0;z-index:75;background:rgba(13,19,80,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;animation:gou-fade .16s ease;">
+        <div onClick="{{ stop }}" style="width:100%;max-width:360px;background:#fff;border-radius:24px;box-shadow:var(--shadow-xl);padding:24px;text-align:center;animation:gou-pop .2s var(--ease-out);">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
+            <span style="font-family:var(--font-sans);font-weight:700;font-size:17px;color:#000;">Tu QR</span>
+            <button onClick="{{ qrCopyQR }}" aria-label="Copiar QR" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="copy" size="16" hint-size="16px,16px"></x-import></button>
+            <button onClick="{{ qrCloseModal }}" aria-label="Cerrar" style="position:absolute;right:0;top:0;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);"><x-import component-from-global-scope="GouIcon" icon="x" size="17" hint-size="17px,17px"></x-import></button>
+          </div>
+          <p style="margin:6px 0 18px;font-size:13px;color:var(--text-muted);">Copia tu QR para usarlo de inmediato</p>
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:200px;height:200px;border-radius:16px;background:var(--surface-sunken);color:#0D1350;"><x-import component-from-global-scope="GouIcon" icon="qr-code" size="120" stroke-width="1" hint-size="120px,120px"></x-import></div>
+          <button onClick="{{ qrCopyLink }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:44px;margin-top:18px;border:1.5px solid var(--border-default);border-radius:12px;background:#fff;cursor:pointer;color:var(--text-strong);font-family:var(--font-sans);font-weight:500;font-size:13.5px;" style-hover="background:var(--surface-hover);"><x-import component-from-global-scope="GouIcon" icon="link" size="17" hint-size="17px,17px"></x-import>Copiar link del QR</button>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <div style="flex:1;text-align:left;"><x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" size="sm" options="{{ qrShareOpts }}" placeholder="Compartir por…" value="{{ qrShareVal }}" onChange="{{ qrSetShare }}" hint-size="100%,44px"></x-import></div>
+            <button onClick="{{ qrShareSend }}" style="display:inline-flex;align-items:center;justify-content:center;gap:7px;height:44px;padding:0 18px;border:none;border-radius:12px;background:var(--action-primary);color:#fff;cursor:pointer;font-family:var(--font-sans);font-weight:500;font-size:13.5px;flex-shrink:0;" style-hover="background:var(--action-primary-hover);"><x-import component-from-global-scope="GouIcon" icon="send" size="16" hint-size="16px,16px"></x-import>Enviar</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== QR (global): MODAL ANULAR ===== -->
+    <sc-if value="{{ qrModalAnularDesk }}">
+      <div onClick="{{ qrCloseModal }}" style="position:fixed;inset:0;z-index:75;background:rgba(13,19,80,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;animation:gou-fade .16s ease;">
+        <div onClick="{{ stop }}" style="width:100%;max-width:400px;background:#fff;border-radius:24px;box-shadow:var(--shadow-xl);padding:28px 24px 24px;text-align:center;position:relative;animation:gou-pop .2s var(--ease-out);">
+          <button onClick="{{ qrCloseModal }}" aria-label="Cerrar" style="position:absolute;right:18px;top:18px;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);"><x-import component-from-global-scope="GouIcon" icon="x" size="17" hint-size="17px,17px"></x-import></button>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;color:#F2A33C;margin-bottom:4px;"><x-import component-from-global-scope="GouIcon" icon="alert-triangle" size="40" stroke-width="1.8" hint-size="40px,40px"></x-import></span>
+          <h3 style="margin:6px 0 8px;font-family:var(--font-sans);font-weight:700;font-size:20px;color:#000;">Anular Código QR</h3>
+          <p style="margin:0 0 22px;font-size:13.5px;color:var(--text-muted);line-height:1.5;">¿Está seguro que desea <strong>anular</strong> este código QR del archivo: <strong>{{ qrAnularArchivo }}</strong>? esta acción es irrevocable.</p>
+          <div style="display:flex;gap:12px;">
+            <button onClick="{{ qrCloseModal }}" style="flex:1;height:48px;border:1.5px solid var(--border-default);border-radius:14px;cursor:pointer;background:#fff;color:#0D1350;font-family:var(--font-sans);font-weight:500;font-size:14px;">Cancelar</button>
+            <button onClick="{{ qrConfirmAnular }}" style="flex:1;height:48px;border:none;border-radius:14px;cursor:pointer;background:#0D1350;color:#fff;font-family:var(--font-sans);font-weight:500;font-size:14px;">Confirmar</button>
           </div>
         </div>
       </div>
@@ -1105,6 +1313,7 @@
                     <!-- filtros + cargar (mismo tamaño) -->
                     <div style="position:relative;display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;z-index:5;">
                       <button onClick="{{ mPmCargar }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:none;border-radius:999px;cursor:pointer;background:#0D1350;color:#fff;font-family:var(--font-sans);font-weight:500;font-size:12.5px;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="upload" size="15" hint-size="15px,15px"></x-import>Cargar archivo</button>
+                      <button onClick="{{ mPmExportar }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid var(--border-default);border-radius:999px;cursor:pointer;background:#fff;color:var(--text-body);font-family:var(--font-sans);font-weight:500;font-size:12.5px;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="download" size="15" hint-size="15px,15px"></x-import>Exportar</button>
                       <button onClick="{{ mPmToggleEstado }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid var(--border-default);border-radius:999px;cursor:pointer;background:#fff;color:var(--text-body);font-family:var(--font-sans);font-weight:500;font-size:12.5px;flex-shrink:0;">{{ mPmEstadoLabel }}<x-import component-from-global-scope="GouIcon" icon="chevron-down" size="14" hint-size="14px,14px"></x-import></button>
                       <button onClick="{{ mPmToggleFecha }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid var(--border-default);border-radius:999px;cursor:pointer;background:#fff;color:var(--text-body);font-family:var(--font-sans);font-weight:500;font-size:12.5px;flex-shrink:0;">{{ mPmFechaSel }}<x-import component-from-global-scope="GouIcon" icon="chevron-down" size="14" hint-size="14px,14px"></x-import></button>
                       <sc-if value="{{ mPmDDEstado }}">
@@ -1124,11 +1333,20 @@
                     </div>
                     <div style="display:flex;flex-direction:column;gap:10px;">
                       <sc-for list="{{ mPmRows }}" as="r" hint-placeholder-count="5">
-                        <div onClick="{{ r.onTap }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:14px;border:none;border-radius:16px;background:{{ r.selBg }};box-shadow:0 7px 7px -5px rgba(0,0,0,.04);cursor:pointer;text-align:left;">
+                        <div onClick="{{ r.onTap }}" style="position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:14px;border:none;border-radius:16px;background:{{ r.selBg }};box-shadow:0 7px 7px -5px rgba(0,0,0,.04);cursor:pointer;text-align:left;">
                           <span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#D6EAFF;color:#0D1350;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="file-text" size="18" hint-size="18px,18px"></x-import></span>
                           <span style="flex:1;min-width:0;"><span style="display:block;font-family:var(--font-sans);font-weight:500;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.nombre }}</span><span style="display:flex;align-items:center;gap:6px;margin-top:3px;"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.estadoDot }};"></span><span style="font-size:11.5px;color:var(--text-muted);">{{ r.estadoLabel }}</span></span></span>
                           <span style="font-family:var(--font-tnum);font-weight:600;font-size:13px;color:#18181B;white-space:nowrap;">{{ r.valorTxt }}</span>
-                          <button onClick="{{ r.onDetail }}" aria-label="Ver detalle" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;border-radius:9px;cursor:pointer;background:var(--surface-sunken);color:var(--text-muted);flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="eye" size="17" hint-size="17px,17px"></x-import></button>
+                          <div style="position:relative;flex-shrink:0;">
+                            <button onClick="{{ r.onMenu }}" aria-label="Acciones" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;border-radius:9px;cursor:pointer;background:{{ r.menuBg }};color:var(--text-muted);"><x-import component-from-global-scope="GouIcon" icon="more-vertical" size="18" hint-size="18px,18px"></x-import></button>
+                            <sc-if value="{{ r.menuOpen }}">
+                              <div style="position:absolute;top:40px;right:0;z-index:30;min-width:188px;padding:6px;border-radius:14px;background:#fff;box-shadow:0 12px 32px -8px rgba(13,19,80,.28),0 2px 8px rgba(13,19,80,.08);">
+                                <button onClick="{{ r.onSupport }}" style="display:flex;align-items:center;gap:11px;width:100%;padding:10px 11px;border:none;border-radius:9px;cursor:pointer;background:transparent;text-align:left;font-family:var(--font-sans);font-weight:500;font-size:13px;color:var(--text-strong);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="file-text" size="16" hint-size="16px,16px"></x-import>Ver soporte</button>
+                                <sc-if value="{{ r.canRefresh }}"><button onClick="{{ r.onRefresh }}" style="display:flex;align-items:center;gap:11px;width:100%;padding:10px 11px;border:none;border-radius:9px;cursor:pointer;background:transparent;text-align:left;font-family:var(--font-sans);font-weight:500;font-size:13px;color:var(--text-strong);" style-hover="background:var(--surface-sunken);"><x-import component-from-global-scope="GouIcon" icon="refresh-cw" size="16" hint-size="16px,16px"></x-import>Refrescar estado</button></sc-if>
+                                <sc-if value="{{ r.canCancel }}"><button onClick="{{ r.onCancel }}" style="display:flex;align-items:center;gap:11px;width:100%;padding:10px 11px;border:none;border-radius:9px;cursor:pointer;background:transparent;text-align:left;font-family:var(--font-sans);font-weight:500;font-size:13px;color:var(--danger);" style-hover="background:var(--danger-surface);"><x-import component-from-global-scope="GouIcon" icon="ban" size="16" hint-size="16px,16px"></x-import>Cancelar</button></sc-if>
+                              </div>
+                            </sc-if>
+                          </div>
                         </div>
                       </sc-for>
                     </div>
@@ -1196,6 +1414,25 @@
                     </div>
                   </div>
                 </sc-if>
+                <sc-if value="{{ mPmSupport }}">
+                  <div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:14px;padding:16px 18px 28px;">
+                    <button onClick="{{ mPmBackList }}" style="display:inline-flex;align-items:center;gap:7px;align-self:flex-start;border:none;background:transparent;cursor:pointer;color:var(--text-muted);font-family:var(--font-sans);font-weight:600;font-size:13px;padding:0;"><x-import component-from-global-scope="GouIcon" icon="arrow-left" size="16" hint-size="16px,16px"></x-import>Volver a la lista</button>
+                    <div><h3 style="margin:0 0 4px;font-family:var(--font-sans);font-weight:700;font-size:18px;color:#000;">Soporte del pago</h3><p style="margin:0;font-size:13px;color:var(--text-muted);">Comprobante del archivo enviado al banco.</p></div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:14px;background:#fff;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);">
+                      <div style="display:flex;align-items:center;gap:11px;min-width:0;"><span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:var(--blue-100);color:var(--blue-600);flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="file-text" size="20" hint-size="20px,20px"></x-import></span><div style="min-width:0;"><div style="font-weight:600;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ mPmSupNombre }}</div><div style="font-size:12px;color:var(--text-muted);">{{ mPmSupTipo }}</div></div></div>
+                      <sc-if value="{{ mPmSupApproved }}"><span style="display:inline-flex;align-items:center;gap:5px;flex-shrink:0;height:24px;padding:0 10px;border-radius:999px;background:var(--aqua-100);color:var(--aqua-700);font-size:11.5px;font-weight:600;"><x-import component-from-global-scope="GouIcon" icon="check-circle" size="13" hint-size="13px,13px"></x-import>Aprobado</span></sc-if>
+                      <sc-if value="{{ mPmSupRejected }}"><span style="display:inline-flex;align-items:center;gap:5px;flex-shrink:0;height:24px;padding:0 10px;border-radius:999px;background:var(--danger-surface);color:var(--danger);font-size:11.5px;font-weight:600;"><x-import component-from-global-scope="GouIcon" icon="x-circle" size="13" hint-size="13px,13px"></x-import>Rechazado</span></sc-if>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:16px;background:#fff;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);">
+                      <div style="display:flex;justify-content:space-between;"><span style="font-size:13px;color:var(--text-muted);">Tipo de archivo</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ mPmSupTipo }}</span></div>
+                      <div style="display:flex;justify-content:space-between;"><span style="font-size:13px;color:var(--text-muted);">Nro. registros</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ mPmSupRegistros }}</span></div>
+                      <div style="display:flex;justify-content:space-between;"><span style="font-size:13px;color:var(--text-muted);">Fecha de carga</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ mPmSupFecha }}</span></div>
+                      <div style="display:flex;justify-content:space-between;"><span style="font-size:13px;color:var(--text-muted);">Hora de carga</span><span style="font-size:13px;font-weight:600;color:var(--text-strong);">{{ mPmSupHora }}</span></div>
+                      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(13,19,80,.05);padding-top:10px;"><span style="font-size:14px;color:var(--text-muted);">Valor total</span><span style="font-family:var(--font-tnum);font-weight:700;font-size:18px;color:#0D1350;">{{ mPmSupValor }}</span></div>
+                    </div>
+                    <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="primary" size="lg" full-width="{{ true }}" onClick="{{ mPmSupExportPdf }}" hint-size="100%,48px"><x-import component-from-global-scope="GouIcon" icon="download" size="17" hint-size="17px,17px"></x-import>Exportar PDF</x-import>
+                  </div>
+                </sc-if>
                 <sc-if value="{{ mPmSuccess }}">
                   <div style="flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 28px;text-align:center;">
                     <span style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:999px;background:var(--aqua-100);color:var(--aqua-700);"><x-import component-from-global-scope="GouIcon" icon="check" size="36" stroke-width="2.4" hint-size="36px,36px"></x-import></span>
@@ -1203,6 +1440,160 @@
                     <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Button" variant="primary" size="lg" onClick="{{ mPmClose }}" hint-size="auto,48px">Volver al inicio</x-import>
                   </div>
                 </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- ===== TRANSACCIONES / QR MOBILE ===== -->
+            <sc-if value="{{ mTxOpen }}">
+              <div style="position:absolute;inset:0;z-index:40;background:#F5F5F7;display:flex;flex-direction:column;">
+                <div style="display:flex;align-items:center;gap:10px;padding:52px 18px 12px;flex-shrink:0;border-bottom:1px solid rgba(13,19,80,.05);">
+                  <button onClick="{{ mTxClose }}" aria-label="Volver" style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:none;border-radius:999px;cursor:pointer;background:#fff;color:#0D1350;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);"><x-import component-from-global-scope="GouIcon" icon="arrow-left" size="18" hint-size="18px,18px"></x-import></button>
+                  <h2 style="margin:0;font-family:var(--font-sans);font-weight:700;font-size:18px;color:#000;">Transacciones</h2>
+                </div>
+
+                <!-- LISTA -->
+                <sc-if value="{{ mTxList }}">
+                  <div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:14px;padding:16px 18px 24px;">
+                    <p style="margin:0;font-size:13px;color:var(--text-muted);">Todo el movimiento de dinero, en un solo flujo.</p>
+                    <button onClick="{{ txGoCargar }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;border:none;border-radius:999px;cursor:pointer;background:var(--action-primary);color:#fff;font-family:var(--font-sans);font-weight:500;font-size:14px;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="upload" size="18" hint-size="18px,18px"></x-import>Cargar archivo</button>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                      <sc-for list="{{ mTxRows }}" as="r" hint-placeholder-count="4">
+                        <button onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:11px;width:100%;padding:14px;border:none;border-radius:16px;background:#fff;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);cursor:pointer;text-align:left;">
+                          <span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#D6EAFF;color:#0D1350;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="{{ r.icon }}" size="18" hint-size="18px,18px"></x-import></span>
+                          <span style="flex:1;min-width:0;"><span style="display:block;font-family:var(--font-sans);font-weight:500;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.title }}</span><span style="display:flex;align-items:center;gap:6px;margin-top:3px;"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.statusDot }};"></span><span style="font-size:11.5px;color:var(--text-muted);">{{ r.statusLabel }}</span></span></span>
+                          <span style="font-family:var(--font-tnum);font-weight:600;font-size:13px;color:{{ r.amountColor }};white-space:nowrap;">{{ r.amountTxt }}</span>
+                        </button>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <!-- CARGAR ARCHIVO -->
+                <sc-if value="{{ mTxCargar }}">
+                  <div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:16px;padding:16px 18px 28px;">
+                    <p style="margin:0;font-size:13px;color:var(--text-muted);">Diligencia los datos para generar los códigos QR de retiro.</p>
+                    <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" label="Tipo Archivo" options="{{ qrTipoOpts }}" placeholder="Selecciona el tipo" value="{{ qrTipoVal }}" onChange="{{ qrSetTipo }}" hint-size="100%,auto"></x-import>
+                    <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Input" label="Nombre del Archivo" placeholder="Ej. PAGO20251" value="{{ qrNombreVal }}" onChange="{{ qrSetNombre }}" hint-size="100%,auto"></x-import>
+                    <x-import component-from-global-scope="GOUPaymentsDesignSystem_3b5c2d.Select" label="Método de Encripción" options="{{ qrEncripOpts }}" placeholder="PGP" value="{{ qrEncripVal }}" onChange="{{ qrSetEncrip }}" hint-size="100%,auto"></x-import>
+                    <div>
+                      <label style="display:block;font-size:13px;font-weight:600;color:var(--text-body);margin-bottom:7px;">Archivo a Cargar</label>
+                      <input id="qrm-file-input" type="file" onChange="{{ qrPickFile }}" style="display:none;" />
+                      <sc-if value="{{ qrNoFile }}">
+                        <div onClick="{{ qrBrowseMobile }}" onDrop="{{ qrDrop }}" onDragOver="{{ qrDragOver }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:30px 18px;border:2px dashed var(--border-default);border-radius:18px;cursor:pointer;text-align:center;background:var(--surface-sunken);">
+                          <span style="color:var(--blue-500);display:inline-flex;"><x-import component-from-global-scope="GouIcon" icon="cloud-upload" size="30" hint-size="30px,30px"></x-import></span>
+                          <div style="font-size:14px;color:var(--text-body);">Toca para <span style="color:var(--text-link);font-weight:600;">examinar</span></div>
+                          <div style="font-size:12px;color:var(--text-subtle);">CSV, XLS, XLSX · máx 10 MB</div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ qrHasFile }}">
+                        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:#fff;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);">
+                          <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:11px;background:var(--blue-100);color:var(--blue-600);flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="file-text" size="20" hint-size="20px,20px"></x-import></span>
+                          <span style="flex:1;min-width:0;font-weight:500;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ qrArchivoVal }}</span>
+                          <button onClick="{{ qrClearFile }}" aria-label="Quitar" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;border-radius:9px;cursor:pointer;background:transparent;color:var(--text-muted);"><x-import component-from-global-scope="GouIcon" icon="trash-2" size="17" hint-size="17px,17px"></x-import></button>
+                        </div>
+                      </sc-if>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:4px;">
+                      <button onClick="{{ qrCancelCargar }}" style="flex:1;height:48px;border:none;border-radius:999px;cursor:pointer;background:#EFEFF0;color:#0D1350;font-family:var(--font-sans);font-weight:500;font-size:14px;">Cancelar</button>
+                      <button onClick="{{ qrCargar }}" style="flex:1;height:48px;border:none;border-radius:999px;cursor:pointer;background:#00ACEC;color:#fff;font-family:var(--font-sans);font-weight:500;font-size:14px;">Cargar Archivo</button>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <!-- RESULTADO -->
+                <sc-if value="{{ mTxResultado }}">
+                  <div style="flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 28px;text-align:center;">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:999px;background:var(--aqua-100);color:var(--aqua-700);"><x-import component-from-global-scope="GouIcon" icon="check" size="36" stroke-width="2.4" hint-size="36px,36px"></x-import></span>
+                    <div><div style="font-family:var(--font-sans);font-weight:700;font-size:20px;color:#000;">Archivo cargado</div><div style="font-size:13.5px;color:var(--text-muted);margin-top:6px;">Se generaron los códigos QR de retiro correctamente.</div></div>
+                    <button onClick="{{ qrFinalizar }}" style="height:48px;padding:0 28px;border:none;border-radius:999px;cursor:pointer;background:#0454FC;color:#fff;font-family:var(--font-sans);font-weight:500;font-size:14px;">Ver registros</button>
+                  </div>
+                </sc-if>
+
+                <!-- TABLA DE REGISTROS -->
+                <sc-if value="{{ mTxTabla }}">
+                  <div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:16px 18px 24px;">
+                    <div style="display:flex;gap:10px;padding:12px 14px;border-radius:12px;background:var(--warning-surface);align-items:center;"><span style="color:#B8860B;display:inline-flex;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="alert-triangle" size="18" hint-size="18px,18px"></x-import></span><span style="font-size:12px;color:#7A5B12;line-height:1.45;">Documento cargado en formato inválido para algunos registros.</span></div>
+                    <sc-for list="{{ qrRows }}" as="r" hint-placeholder-count="4">
+                      <div style="position:relative;display:flex;align-items:center;gap:11px;padding:14px;border-radius:16px;background:#fff;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);">
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#D6EAFF;color:#0D1350;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="qr-code" size="18" hint-size="18px,18px"></x-import></span>
+                        <span style="flex:1;min-width:0;"><span style="display:block;font-family:var(--font-sans);font-weight:500;font-size:13.5px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.beneficiario }}</span><span style="display:block;font-size:11.5px;color:var(--text-muted);">{{ r.identificacion }} · {{ r.valor }}</span></span>
+                        <button onClick="{{ r.menu }}" aria-label="Acciones" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;border-radius:9px;cursor:pointer;background:transparent;color:var(--text-muted);flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="more-vertical" size="18" hint-size="18px,18px"></x-import></button>
+                        <sc-if value="{{ r.menuOpen }}">
+                          <div style="position:absolute;top:54px;right:14px;z-index:5;width:230px;background:#fff;border-radius:14px;box-shadow:0 12px 32px -8px rgba(13,19,80,.28),0 2px 8px rgba(13,19,80,.08);padding:6px;display:flex;flex-direction:column;">
+                            <button onClick="{{ qrVerQR }}" style="display:flex;align-items:center;gap:10px;padding:11px 12px;border:none;border-radius:10px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13.5px;color:var(--text-strong);"><x-import component-from-global-scope="GouIcon" icon="qr-code" size="17" hint-size="17px,17px"></x-import>Ver el QR</button>
+                            <button onClick="{{ qrReenviar }}" style="display:flex;align-items:center;gap:10px;padding:11px 12px;border:none;border-radius:10px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13.5px;color:var(--text-strong);"><x-import component-from-global-scope="GouIcon" icon="send" size="17" hint-size="17px,17px"></x-import>Reenviar QR al beneficiario</button>
+                            <button onClick="{{ qrAnularOpen }}" style="display:flex;align-items:center;gap:10px;padding:11px 12px;border:none;border-radius:10px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13.5px;color:var(--text-strong);"><x-import component-from-global-scope="GouIcon" icon="x-circle" size="17" hint-size="17px,17px"></x-import>Anular / eliminar QR</button>
+                            <button onClick="{{ qrEliminarBenef }}" style="display:flex;align-items:center;gap:10px;padding:11px 12px;border:none;border-radius:10px;background:transparent;cursor:pointer;text-align:left;font-family:var(--font-sans);font-size:13.5px;color:var(--danger);"><x-import component-from-global-scope="GouIcon" icon="trash-2" size="17" hint-size="17px,17px"></x-import>Eliminar beneficiario</button>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+              </div>
+            </sc-if>
+
+            <!-- ===== MÓDULO GENÉRICO MOBILE (Recaudos · Débitos · Reportes) ===== -->
+            <sc-if value="{{ mModuleOpen }}">
+              <div style="position:absolute;inset:0;z-index:40;background:#F5F5F7;display:flex;flex-direction:column;">
+                <div style="display:flex;align-items:center;gap:10px;padding:52px 18px 12px;flex-shrink:0;border-bottom:1px solid rgba(13,19,80,.05);">
+                  <button onClick="{{ mModuleClose }}" aria-label="Volver" style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:none;border-radius:999px;cursor:pointer;background:#fff;color:#0D1350;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);"><x-import component-from-global-scope="GouIcon" icon="arrow-left" size="18" hint-size="18px,18px"></x-import></button>
+                  <h2 style="margin:0;font-family:var(--font-sans);font-weight:700;font-size:18px;color:#000;">{{ mModuleTitle }}</h2>
+                </div>
+                <div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:16px;padding:16px 18px 120px;">
+                  <p style="margin:0;font-size:13px;color:var(--text-muted);">{{ mModuleSubtitle }}</p>
+                  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
+                    <sc-for list="{{ mModuleStats }}" as="k" hint-placeholder-count="3">
+                      <div style="padding:13px 14px;border-radius:16px;background:#D6EAFF;min-width:0;">
+                        <div style="display:flex;align-items:center;gap:6px;min-width:0;">
+                          <div class="gou-count" style="flex:1;min-width:0;font-family:var(--font-tnum);font-weight:700;font-size:15px;color:#0D1350;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ k.value }}</div>
+                          <sc-if value="{{ k.hasDelta }}"><span style="font-size:9.5px;font-weight:600;padding:2px 6px;border-radius:6px;background:#85C4FF;color:#0D1350;flex-shrink:0;">{{ k.delta }}</span></sc-if>
+                        </div>
+                        <div style="font-size:11px;color:rgba(13,19,80,.6);margin-top:8px;line-height:1.2;">{{ k.label }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;padding:2px 2px 0;"><span style="width:7px;height:7px;border-radius:50%;background:#00ACEC;"></span><h3 style="margin:0;font-family:var(--font-sans);font-weight:700;font-size:15px;color:#000;">Movimientos recientes</h3></div>
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <sc-for list="{{ mModuleRows }}" as="r" hint-placeholder-count="5">
+                      <div style="display:flex;align-items:center;gap:11px;width:100%;padding:14px;border-radius:15px;background:#fff;box-shadow:0 7px 7px -5px rgba(0,0,0,.04);">
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:#D6EAFF;color:#0D1350;flex-shrink:0;"><x-import component-from-global-scope="GouIcon" icon="{{ r.icon }}" size="18" hint-size="18px,18px"></x-import></span>
+                        <span style="flex:1;min-width:0;"><span style="display:block;font-family:var(--font-sans);font-weight:500;font-size:14px;color:var(--text-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.title }}</span><span style="display:block;font-size:12px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.subtitle }}</span></span>
+                        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;"><span style="font-family:var(--font-tnum);font-weight:600;font-size:13.5px;color:{{ r.amountColor }};white-space:nowrap;">{{ r.amountTxt }}</span><span style="display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 9px;border-radius:999px;background:var(--surface-sunken);color:var(--text-body);font-size:10.5px;font-weight:500;"><span style="width:5px;height:5px;border-radius:50%;background:{{ r.statusDot }};flex-shrink:0;"></span>{{ r.statusLabel }}</span></span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- QR MOBILE (compartido: pagos masivos + transacciones) -->
+            <sc-if value="{{ qrModalQRMobile }}">
+              <div onClick="{{ qrCloseModal }}" style="position:absolute;inset:0;z-index:60;background:rgba(13,19,80,.5);display:flex;align-items:center;justify-content:center;padding:24px;">
+                <div onClick="{{ stop }}" style="width:100%;max-width:320px;background:#fff;border-radius:24px;box-shadow:var(--shadow-xl);padding:24px;text-align:center;">
+                  <div style="display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
+                    <span style="font-family:var(--font-sans);font-weight:700;font-size:17px;color:#000;">Tu QR</span>
+                    <button onClick="{{ qrCloseModal }}" aria-label="Cerrar" style="position:absolute;right:0;top:0;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;border-radius:8px;background:transparent;cursor:pointer;color:var(--text-muted);"><x-import component-from-global-scope="GouIcon" icon="x" size="17" hint-size="17px,17px"></x-import></button>
+                  </div>
+                  <p style="margin:6px 0 18px;font-size:13px;color:var(--text-muted);">Copia tu QR para usarlo de inmediato</p>
+                  <div style="display:inline-flex;align-items:center;justify-content:center;width:190px;height:190px;border-radius:16px;background:var(--surface-sunken);color:#0D1350;"><x-import component-from-global-scope="GouIcon" icon="qr-code" size="110" stroke-width="1" hint-size="110px,110px"></x-import></div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- QR MOBILE (compartido): modal Anular -->
+            <sc-if value="{{ qrModalAnularMobile }}">
+              <div onClick="{{ qrCloseModal }}" style="position:absolute;inset:0;z-index:60;background:rgba(13,19,80,.5);display:flex;align-items:center;justify-content:center;padding:24px;">
+                <div onClick="{{ stop }}" style="width:100%;max-width:340px;background:#fff;border-radius:24px;box-shadow:var(--shadow-xl);padding:28px 24px 24px;text-align:center;position:relative;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;color:#F2A33C;margin-bottom:4px;"><x-import component-from-global-scope="GouIcon" icon="alert-triangle" size="40" stroke-width="1.8" hint-size="40px,40px"></x-import></span>
+                  <h3 style="margin:6px 0 8px;font-family:var(--font-sans);font-weight:700;font-size:19px;color:#000;">Anular Código QR</h3>
+                  <p style="margin:0 0 22px;font-size:13px;color:var(--text-muted);line-height:1.5;">¿Está seguro que desea <strong>anular</strong> este código QR del archivo: <strong>{{ qrAnularArchivo }}</strong>? esta acción es irrevocable.</p>
+                  <div style="display:flex;gap:12px;">
+                    <button onClick="{{ qrCloseModal }}" style="flex:1;height:48px;border:1.5px solid var(--border-default);border-radius:14px;cursor:pointer;background:#fff;color:#0D1350;font-family:var(--font-sans);font-weight:500;font-size:14px;">Cancelar</button>
+                    <button onClick="{{ qrConfirmAnular }}" style="flex:1;height:48px;border:none;border-radius:14px;cursor:pointer;background:#0D1350;color:#fff;font-family:var(--font-sans);font-weight:500;font-size:14px;">Confirmar</button>
+                  </div>
+                </div>
               </div>
             </sc-if>
 
@@ -1440,7 +1831,7 @@ class Component extends DCLogic {
     super(props);
     // Read the demo flow from the launcher: ?flow=login|all|<product>. A product flow scopes the
     // shell to a single module so commercial can present just that flow.
-    const ROUTES = ["home", "tx", "masivos", "recaudos", "debitos", "reportes", "config"];
+    const ROUTES = ["home", "tx", "masivos", "movimientos", "recaudos", "debitos", "reportes", "config"];
     let flow = "";
     try { flow = new URLSearchParams(location.search).get("flow") || ""; } catch (e) {}
     let openMobile = false;
@@ -1453,6 +1844,7 @@ class Component extends DCLogic {
       "login-step2":  { d: { logged: false, scope: "all", route: "home" }, loginStep: 2 },
       "home":         { d: { logged: true, scope: "all", route: "home" } },
       "tx":           { d: { logged: true, scope: "tx", route: "tx" } },
+      "movimientos":  { d: { logged: true, scope: "movimientos", route: "movimientos" } },
       "masivos":      { d: { logged: true, scope: "masivos", route: "masivos" }, pm: "list" },
       "masivos-upload":  { d: { logged: true, scope: "masivos", route: "masivos" }, pm: "upload" },
       "masivos-confirm": { d: { logged: true, scope: "masivos", route: "masivos" }, pm: "confirm", sel: 1 },
@@ -1493,10 +1885,14 @@ class Component extends DCLogic {
       mPmOpen: (SC && SC.mob && SC.mob.pm) ? true : false,
       mPmView: (SC && SC.mob && SC.mob.pmView) ? SC.mob.pmView : "list",
       mPmSel: (SC && SC.mob && SC.mob.sel) ? SC.mob.sel : null,
+      mModuleOpen: false,
+      mModuleRoute: null,
       mPmClave: "",
       mPmShowClave: false,
       mPmSlide: 0,
       mPmDD: null,
+      mPmMenuId: null,
+      mPmSupportId: null,
       mPmEstadoSel: "todos",
       mPmFechaSel: "Todas",
       mPmTipo: "",
@@ -1528,12 +1924,14 @@ class Component extends DCLogic {
       pmTipo: "",
       pmNombre: "",
       pmPgp: false,
+      pmFecha: "",
       pmFile: "",
       pmClaveOpen: (SC && SC.d && SC.clave) ? true : false,
       pmClave: "",
       pmShowClave: false,
       pmRows: [
-        { id: 1, nombre: "nomina_junio_q2.txt", fecha: "2026/06/10", hora: "09:02", valor: 18750000, estado: "cargado", validos: 412, errados: 0 },
+        { id: 1, nombre: "nomina_junio_q2.txt", fecha: "2026/06/10", hora: "09:02", valor: 18750000, estado: "cargado", validos: 412, errados: 0, tipo: "Pago a Terceros Múltiple" },
+        { id: 9, nombre: "retiros_qr_junio.txt", fecha: "2026/06/10", hora: "09:15", valor: 5000000, estado: "cargado", validos: 20, errados: 0, tipo: "Pago para Retiro por QR en Cajero" },
         { id: 2, nombre: "proveedores_logistica.txt", fecha: "2026/06/10", hora: "08:40", valor: 9420000, estado: "invalido", validos: null, errados: null },
         { id: 3, nombre: "comisiones_fuerza_comercial.csv", fecha: "2026/06/09", hora: "16:20", valor: 7310000, estado: "aplicado", validos: 96, errados: 0 },
         { id: 4, nombre: "bonificaciones_q2.csv", fecha: "2026/06/08", hora: "10:05", valor: 12200000, estado: "cancelado", validos: 210, errados: 0 },
@@ -1686,6 +2084,7 @@ class Component extends DCLogic {
     ]},
     { section: "PRODUCTOS", icon: "layout-grid", items: [
       { value: "masivos", label: "Pagos masivos", icon: "users" },
+      { value: "movimientos", label: "Movimientos", icon: "arrow-down-up" },
       { value: "recaudos", label: "Recaudos", icon: "arrow-down-to-line" },
       { value: "debitos", label: "Débitos automáticos", icon: "repeat" },
     ]},
@@ -1737,7 +2136,64 @@ class Component extends DCLogic {
     { title: "Resumen diario por correo", sub: "Cada día a las 7:00 a.m.", on: false },
   ];
 
+  MOVIMIENTOS = [
+    { origen: "123456789", fecha: "2026/06/15", valor: "$ 5.000.000", beneficiario: "Carlos Andrés Ruiz", identificacion: "1.020.304.050", destino: "987654321", estado: "cargado", tipo: "Pago para Retiro por QR en Cajero" },
+    { origen: "123456789", fecha: "2026/06/15", valor: "$ 1.250.000", beneficiario: "Distribuidora Andina S.A.S", identificacion: "900.123.456", destino: "456789123", estado: "cargado", tipo: "Pago a Terceros Múltiple" },
+    { origen: "123456789", fecha: "2026/06/12", valor: "$ 18.750.000", beneficiario: "Nómina junio — quincena 1", identificacion: "830.055.111", destino: "321654987", estado: "proceso", tipo: "Pago a Terceros Múltiple" },
+    { origen: "123456789", fecha: "2026/06/10", valor: "$ 89.900", beneficiario: "Suscripción SaaS", identificacion: "901.222.333", destino: "147258369", estado: "cargado", tipo: "Débitos Automáticos" },
+    { origen: "123456789", fecha: "2026/06/02", valor: "$ 540.000", beneficiario: "Tesorería Banco Popular", identificacion: "800.999.777", destino: "258369147", estado: "cancelado", tipo: "Cuentas Maestras" },
+    { origen: "123456789", fecha: "2026/05/28", valor: "$ 2.500.000", beneficiario: "María Fernanda Gómez", identificacion: "52.118.940", destino: "963852741", estado: "cargado", tipo: "Pago para Retiro por QR en Cajero" },
+    { origen: "123456789", fecha: "2026/05/20", valor: "$ 320.000", beneficiario: "Jorge Luis Patiño", identificacion: "79.554.201", destino: "159357456", estado: "cargado", tipo: "Pagos a Terceros" },
+    { origen: "123456789", fecha: "2026/05/16", valor: "$ 7.310.000", beneficiario: "Fuerza Comercial — comisiones", identificacion: "830.771.221", destino: "753951456", estado: "invalido", tipo: "Pago a Terceros Múltiple" },
+  ];
+
+  // Filtra MOVIMIENTOS en vivo por búsqueda (beneficiario/identificación), período, tipo de pago y estado.
+  movFilteredRows() {
+    const S = this.state;
+    const norm = (s) => (s == null ? "" : String(s)).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const digits = (s) => (s == null ? "" : String(s)).replace(/\D/g, "");
+    const q = norm((S.movQuery || "").trim());
+    const qd = digits(S.movQuery || "");
+    const per = S.movPeriodo || "";
+    const est = S.movEstado || "";
+    const parse = (s) => { const mm = /(\d{4})\/(\d{2})\/(\d{2})/.exec(s || ""); return mm ? new Date(+mm[1], +mm[2] - 1, +mm[3]) : null; };
+    const ds = this.MOVIMIENTOS.map((r) => parse(r.fecha)).filter(Boolean).map((d) => d.getTime());
+    const ref = ds.length ? new Date(Math.max.apply(null, ds)) : new Date();
+    const inPer = (r) => {
+      if (!per || per === "Todos los períodos") return true;
+      const d = parse(r.fecha); if (!d) return false;
+      const days = Math.round((ref - d) / 86400000);
+      if (per === "Hoy") return days === 0;
+      if (per === "Últimos 7 días") return days <= 7;
+      if (per === "Últimos 30 días") return days <= 30;
+      if (per === "Este mes") return d.getFullYear() === ref.getFullYear() && d.getMonth() === ref.getMonth();
+      return true;
+    };
+    return this.MOVIMIENTOS.filter((r) =>
+      (!S.movTipo || r.tipo === S.movTipo) &&
+      (!est || r.estado === est) &&
+      inPer(r) &&
+      (!q || norm(r.beneficiario).indexOf(q) >= 0 || norm(r.identificacion).indexOf(q) >= 0 || (qd && digits(r.identificacion).indexOf(qd) >= 0))
+    );
+  }
+
   MODULES = {
+    movimientos: { title: "Movimientos", subtitle: "Todas las entradas y salidas, consolidadas en un solo lugar", icon: "arrow-down-up", cta: "Exportar", ctaIcon: "download",
+      stats: [
+        { label: "Entradas del mes", value: "$ 142.8M", icon: "arrow-down-left", tone: "aqua", delta: "+11,4%", trend: "up", foot: "vs. mayo" },
+        { label: "Salidas del mes", value: "$ 98.3M", icon: "arrow-up-right", tone: "deep", delta: "+6,2%", trend: "up", foot: "vs. mayo" },
+        { label: "Movimientos totales", value: "1.284", icon: "activity", tone: "blue", delta: "+96", trend: "up", foot: "este mes" },
+      ],
+      rows: [
+        { title: "PAGO20251 — Retiro Cajero QR", subtitle: "Hoy · 11:20 · 96 beneficiarios", icon: "qr-code", tone: "brand", amount: -4800000, status: "processing", tipo: "Pagos para Retirar con QR" },
+        { title: "Pago masivo nómina", subtitle: "Hoy · 09:02 · 412 destinatarios", icon: "arrow-up-right", tone: "deep", amount: -18750000, status: "processing", tipo: "Pago masivo" },
+        { title: "Recaudo — Cliente 4821", subtitle: "Hoy · 10:24 · PSE", icon: "arrow-down-left", tone: "aqua", amount: 320000, status: "completed", tipo: "Recaudo" },
+        { title: "Débito automático — Suscripción", subtitle: "Hoy · 08:15", icon: "repeat", tone: "blue", amount: -89900, status: "completed", tipo: "Débito automático" },
+        { title: "Transferencia interbancaria", subtitle: "Ayer · 11:03 · CENIT", icon: "arrow-left-right", tone: "blue", amount: -540000, status: "pending", tipo: "Transacción" },
+        { title: "PAGO20240 — Retiro Cajero QR", subtitle: "Ayer · 16:40 · 50 beneficiarios", icon: "qr-code", tone: "brand", amount: -2500000, status: "completed", tipo: "Pagos para Retirar con QR" },
+        { title: "Pago proveedor — Logística S.A.", subtitle: "Ayer · 15:12", icon: "arrow-up-right", tone: "deep", amount: -2300000, status: "failed", tipo: "Transacción" },
+        { title: "Recaudo — Cliente 1190", subtitle: "Ayer · 18:41 · Botón bancario", icon: "arrow-down-left", tone: "aqua", amount: 1450000, status: "completed", tipo: "Recaudo" },
+      ] },
     tx: { title: "Transacciones", subtitle: "Todo el movimiento de dinero, en un solo flujo", icon: "arrow-left-right", cta: "Nueva transacción", ctaIcon: "plus",
       stats: [
         { label: "Movimientos hoy", value: "128", icon: "activity", tone: "blue", delta: "+9", trend: "up", foot: "vs. ayer" },
@@ -2004,7 +2460,7 @@ class Component extends DCLogic {
     const mFmt = (n) => this.fmtMoney(n);
     const mobileProducts = this.PRODUCTS.map((p) => ({
       name: p.name, icon: p.icon,
-      onClick: () => { if (p.name === "Pagos masivos") { this.setState({ mPmOpen: true, mPmView: "list", mPmSel: null }); } else { this.showToast({ kind: "info", title: p.name, description: "Abriendo " + p.name + " en mobile…" }); } },
+      onClick: () => { if (p.value === "masivos") { this.setState({ mPmOpen: true, mTxOpen: false, mModuleOpen: false, mPmView: "list", mPmSel: null }); } else if (p.value === "tx") { this.setState({ mTxOpen: true, mPmOpen: false, mModuleOpen: false, qrView: null, qrTipo: "", qrNombre: "", qrEncrip: "", qrArchivo: "", qrRowMenu: null }); } else { this.setState({ mModuleOpen: true, mModuleRoute: p.value, mPmOpen: false, mTxOpen: false }); } },
     }));
     const mobileKpis = [
       { value: "$ 4.820.000", delta: "+12,4%", label: "Recaudado hoy" },
@@ -2103,13 +2559,32 @@ class Component extends DCLogic {
       mPmSuccess: S.mPmOpen && S.mPmView === "success",
       mPmOpenFlow: () => this.setState({ mPmOpen: true, mPmView: "list", mPmSel: null }),
       mPmClose: () => this.setState({ mPmOpen: false, mPmView: "list", mPmSel: null }),
-      mPmRows: this.state.pmRows.filter((r) => S.mPmEstadoSel === "todos" || r.estado === S.mPmEstadoSel).map((r) => { const m = this.pmMeta(r.estado); const dot = ({ success: "var(--aqua-500)", danger: "var(--danger)", neutral: "var(--neutral-400)", blue: "var(--blue-500)" })[m.tone] || "var(--neutral-400)"; return { id: r.id, nombre: r.nombre, valorTxt: this.fmtMoney(r.valor), estadoLabel: m.label, estadoDot: dot, selectable: r.estado === "cargado", isSel: this.state.mPmSel === r.id, selBg: this.state.mPmSel === r.id ? "#EEF3FF" : "#fff", onTap: () => { if (r.estado === "cargado") this.setState({ mPmSel: this.state.mPmSel === r.id ? null : r.id }); else this.showToast({ kind: "info", title: "No disponible", description: "Solo puedes ejecutar archivos en estado Cargado." }); }, onDetail: (e) => { if (e && e.stopPropagation) e.stopPropagation(); const x = this.state.pmRows.find((z) => z.id === r.id); if (x) this.showToast({ kind: "info", title: x.nombre, description: "Detalle · " + this.fmtMoney(x.valor) + " · " + this.pmMeta(x.estado).label }); } }; }),
+      // ---- Módulo genérico mobile (Recaudos, Débitos automáticos, Reportes) ----
+      mModuleOpen: S.mModuleOpen,
+      mModuleTitle: (this.MODULES[S.mModuleRoute] || {}).title || "",
+      mModuleSubtitle: (this.MODULES[S.mModuleRoute] || {}).subtitle || "",
+      mModuleStats: ((this.MODULES[S.mModuleRoute] || {}).stats || []).map((k) => ({ value: k.value, delta: k.delta || "", hasDelta: !!k.delta, label: k.label })),
+      mModuleRows: S.mModuleRoute && this.MODULES[S.mModuleRoute] ? this.modExpanded(S.mModuleRoute, this.MODULES[S.mModuleRoute]).slice(0, 6).map((r, i) => this.txRow(r, i)) : [],
+      mModuleClose: () => this.setState({ mModuleOpen: false, mModuleRoute: null }),
+      // ---- Transacciones / QR mobile (reusa handlers qr*) ----
+      mTxOpen: S.mTxOpen,
+      mTxList: S.mTxOpen && !S.qrView,
+      mTxCargar: S.mTxOpen && S.qrView === "cargar",
+      mTxResultado: S.mTxOpen && S.qrView === "resultado",
+      mTxTabla: S.mTxOpen && S.qrView === "tabla",
+      mTxClose: () => this.setState({ mTxOpen: false, qrView: null, qrRowMenu: null }),
+      mTxRows: (this.MODULES.tx.rows || []).map((r, i) => { const m = this.txStatusMeta ? this.txStatusMeta(r.status) : { label: r.status, dot: "var(--neutral-400)" }; const inflow = r.amount > 0; return { title: r.title, subtitle: r.subtitle, icon: r.icon, amountTxt: (inflow ? "+ " : "- ") + this.fmtMoney(Math.abs(r.amount)), amountColor: inflow ? "var(--aqua-700)" : "var(--text-strong)", statusLabel: m.label, statusDot: m.dot, onClick: () => this.showToast({ kind: "info", title: r.title, description: r.subtitle }) }; }),
+      qrRowMenuId: S.qrRowMenu,
+      mTxRowMenu: (id) => this.setState((s) => ({ qrRowMenu: s.qrRowMenu === id ? null : id })),
+      mTxCloseMenu: () => this.setState({ qrRowMenu: null }),
+      mPmRows: this.state.pmRows.filter((r) => S.mPmEstadoSel === "todos" || r.estado === S.mPmEstadoSel).map((r) => { const m = this.pmMeta(r.estado); const dot = ({ success: "var(--aqua-500)", danger: "var(--danger)", neutral: "var(--neutral-400)", blue: "var(--blue-500)" })[m.tone] || "var(--neutral-400)"; const open = this.state.mPmMenuId === r.id; return { id: r.id, nombre: r.nombre, valorTxt: this.fmtMoney(r.valor), estadoLabel: m.label, estadoDot: dot, selectable: r.estado === "cargado", isSel: this.state.mPmSel === r.id, selBg: this.state.mPmSel === r.id ? "#EEF3FF" : "#fff", menuOpen: open, menuBg: open ? "var(--surface-sunken)" : "transparent", canRefresh: r.estado === "cargado" || r.estado === "proceso", canCancel: r.estado === "cargado", onTap: () => { if (this.state.mPmMenuId != null) { this.setState({ mPmMenuId: null }); return; } if (r.estado === "cargado") this.setState({ mPmSel: this.state.mPmSel === r.id ? null : r.id }); else this.showToast({ kind: "info", title: "No disponible", description: "Solo puedes ejecutar archivos en estado Cargado." }); }, onMenu: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState((s) => ({ mPmMenuId: s.mPmMenuId === r.id ? null : r.id })); }, onSupport: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mPmMenuId: null, mPmSupportId: r.id, mPmView: "support" }); }, onRefresh: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mPmMenuId: null }); this.showToast({ kind: "info", title: "Validando archivo", description: "Actualizando el estado de " + r.nombre + "…" }); }, onCancel: (e) => { if (e && e.stopPropagation) e.stopPropagation(); if (r.estado !== "cargado") return; this.setState((s) => ({ pmRows: s.pmRows.map((x) => x.id === r.id ? { ...x, estado: "cancelado" } : x), mPmSel: s.mPmSel === r.id ? null : s.mPmSel, mPmMenuId: null })); this.showToast({ kind: "info", title: "Archivo cancelado", description: r.nombre + " pasó a estado Cancelado." }); } }; }),
       mPmStats: [
         { value: "$ 412.8M", label: "Dispersado este mes", delta: "+6,2%", hasDelta: true, bg: "#0D1350", wm: "#0F3B9A" },
         { value: "8", label: "Lotes activos", delta: "", hasDelta: false, bg: "#0454FC", wm: "#0346D3" },
         { value: "3.940", label: "Destinatarios", delta: "+120", hasDelta: true, bg: "#00ACEC", wm: "#0094D4" },
       ],
       mPmKpiScroll: (e) => { const el = e && e.target; if (!el) return; const i = Math.round(el.scrollLeft / (el.clientWidth * 0.64 + 10)); if (i !== this.state.mPmSlide) this.setState({ mPmSlide: i }); },
+      mPmExportar: () => { this.setState({ mPmDD: null }); this.showToast({ kind: "info", title: "Exportando", description: "Generando el reporte en Excel…" }); },
       mPmDot0Bg: (S.mPmSlide || 0) === 0 ? "#0454FC" : "#C7CCD6", mPmDot0W: (S.mPmSlide || 0) === 0 ? "20px" : "7px",
       mPmDot1Bg: (S.mPmSlide || 0) === 1 ? "#0454FC" : "#C7CCD6", mPmDot1W: (S.mPmSlide || 0) === 1 ? "20px" : "7px",
       mPmDot2Bg: (S.mPmSlide || 0) === 2 ? "#0454FC" : "#C7CCD6", mPmDot2W: (S.mPmSlide || 0) === 2 ? "20px" : "7px",
@@ -2140,12 +2615,22 @@ class Component extends DCLogic {
       mPmClaveType: S.mPmShowClave ? "text" : "password",
       mPmClaveEye: S.mPmShowClave ? "eye-off" : "eye",
       mPmToggleClave: () => this.setState((s) => ({ mPmShowClave: !s.mPmShowClave })),
-      mPmConfirmSend: () => { const id = this.state.mPmSel; this.setState((s) => ({ pmRows: s.pmRows.map((r) => r.id === id ? { ...r, estado: "proceso" } : r), mPmView: "success", mPmClave: "" })); },
+      mPmConfirmSend: () => { const id = this.state.mPmSel; const row = this.state.pmRows.find((r) => r.id === id) || {}; const isQr = row.tipo === "Pago para Retiro por QR en Cajero"; this.setState((s) => ({ pmRows: s.pmRows.map((r) => r.id === id ? { ...r, estado: "proceso" } : r), mPmView: isQr ? "list" : "success", mPmSel: isQr ? null : s.mPmSel, mPmClave: "", mPmOpen: true, qrModal: isQr ? "qr" : null })); if (!isQr) this.showToast({ kind: "success", title: "Pago masivo enviado", description: "Listo. Tu archivo está en proceso en el banco." }); },
       mPmCargar: () => this.setState({ mPmView: "upload", mPmTipo: "", mPmNombre: "", mPmPgp: false, mPmFile: "" }),
       mPmUpload: S.mPmOpen && S.mPmView === "upload",
+      mPmSupport: S.mPmOpen && S.mPmView === "support",
+      mPmSupNombre: (this.state.pmRows.find((r) => r.id === S.mPmSupportId) || {}).nombre || "—",
+      mPmSupTipo: (this.state.pmRows.find((r) => r.id === S.mPmSupportId) || {}).tipo || "Pago a Terceros Múltiple",
+      mPmSupValor: this.fmtMoney((this.state.pmRows.find((r) => r.id === S.mPmSupportId) || {}).valor || 0),
+      mPmSupRegistros: String((this.state.pmRows.find((r) => r.id === S.mPmSupportId) || {}).validos || 0),
+      mPmSupFecha: (this.state.pmRows.find((r) => r.id === S.mPmSupportId) || {}).fecha || "—",
+      mPmSupHora: (this.state.pmRows.find((r) => r.id === S.mPmSupportId) || {}).hora || "—",
+      mPmSupApproved: (() => { const x = this.state.pmRows.find((r) => r.id === S.mPmSupportId); return x ? (x.estado !== "invalido" && x.estado !== "cancelado") : true; })(),
+      mPmSupRejected: (() => { const x = this.state.pmRows.find((r) => r.id === S.mPmSupportId); return x ? (x.estado === "invalido" || x.estado === "cancelado") : false; })(),
+      mPmSupExportPdf: () => this.showToast({ kind: "info", title: "Exportando PDF", description: "Generando el soporte del pago…" }),
       mPmTipoVal: S.mPmTipo, mPmNombreVal: S.mPmNombre, mPmPgpVal: S.mPmPgp, mPmFileVal: S.mPmFile,
       mPmHasFile: !!S.mPmFile, mPmNoFile: !S.mPmFile,
-      mPmTipoOpts: ["Pago a Terceros Múltiple", "Pagos a Terceros", "Pagos a Terceros EPS", "Débitos Automáticos", "Cuentas Maestras"],
+      mPmTipoOpts: ["Pago a Terceros Múltiple", "Pagos a Terceros", "Pagos a Terceros EPS", "Débitos Automáticos", "Cuentas Maestras", "Pago para Retiro por QR en Cajero"],
       mPmSetTipo: (e) => this.setState({ mPmTipo: e && e.target ? e.target.value : "" }),
       mPmSetNombre: (e) => this.setState({ mPmNombre: e && e.target ? e.target.value : "" }),
       mPmTogglePgp: () => this.setState((s) => ({ mPmPgp: !s.mPmPgp })),
@@ -2161,8 +2646,8 @@ class Component extends DCLogic {
         const valido = ext === "csv" || ext === "xlsx" || ext === "xls" || ext === "txt";
         const id = this.state.pmNextId;
         const row = valido
-          ? { id, nombre: this.state.mPmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 8400000, estado: "cargado", validos: 10, errados: 0 }
-          : { id, nombre: this.state.mPmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 0, estado: "invalido", validos: null, errados: null };
+          ? { id, nombre: this.state.mPmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 8400000, estado: "cargado", validos: 10, errados: 0, tipo: this.state.mPmTipo }
+          : { id, nombre: this.state.mPmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 0, estado: "invalido", validos: null, errados: null, tipo: this.state.mPmTipo };
         this.setState((s) => ({ pmRows: [row, ...s.pmRows], pmNextId: s.pmNextId + 1, mPmView: "list", mPmTipo: "", mPmNombre: "", mPmPgp: false, mPmFile: "" }));
         this.showToast(valido ? { kind: "success", title: "Archivo cargado", description: "Listo para ejecutar. Selecciónalo y presiona Ejecutar." } : { kind: "error", title: "Archivo inválido", description: "El formato no es válido. Usa CSV o Excel." });
       },
@@ -2183,11 +2668,12 @@ class Component extends DCLogic {
   pmVals() {
     const S = this.state;
     const fmt = (n) => this.fmtMoney(n);
-    const TIPOS = ["Pago a Terceros Múltiple", "Pagos a Terceros", "Pagos a Terceros EPS", "Débitos Automáticos", "Cuentas Maestras", "Abrir Cuentas de Nómina"];
+    const TIPOS = ["Pago a Terceros Múltiple", "Pagos a Terceros", "Pagos a Terceros EPS", "Débitos Automáticos", "Cuentas Maestras", "Abrir Cuentas de Nómina", "Pago para Retiro por QR en Cajero"];
     const rows = S.pmRows.map((r) => {
       const m = this.pmMeta(r.estado);
       return {
         id: r.id, nombre: r.nombre, fecha: r.fecha, hora: r.hora,
+        tipo: r.tipo || "Pago a Terceros Múltiple",
         valor: fmt(r.valor),
         validos: r.validos == null ? "—" : String(r.validos),
         errados: r.errados == null ? "—" : String(r.errados),
@@ -2216,13 +2702,13 @@ class Component extends DCLogic {
     const pmPages = this.pageList(pmCur, pmTotalPages).map((p) => p === "..." ? { isEllipsis: true } : { label: String(p), isCurrent: p === pmCur, notCurrent: p !== pmCur, onClick: () => goPmPage(p) });
     const selRow = S.pmRows.find((r) => r.id === S.pmSel) || null;
     const confirmRow = selRow
-      ? { nombre: selRow.nombre, valor: fmt(selRow.valor), fecha: selRow.fecha, hora: selRow.hora, registros: String(selRow.validos != null ? selRow.validos : 0) }
-      : { nombre: "—", valor: "—", fecha: "—", hora: "—", registros: "0" };
+      ? { nombre: selRow.nombre, valor: fmt(selRow.valor), fecha: selRow.fecha, hora: selRow.hora, registros: String(selRow.validos != null ? selRow.validos : 0), tipo: selRow.tipo || "Pago a Terceros Múltiple" }
+      : { nombre: "—", valor: "—", fecha: "—", hora: "—", registros: "0", tipo: "—" };
     const detRow = S.pmRows.find((r) => r.id === S.pmDetailId) || null;
     const detApproved = detRow ? (detRow.estado !== "invalido" && detRow.estado !== "cancelado") : true;
     const detail = detRow
-      ? { nombre: detRow.nombre, valor: fmt(detRow.valor), fecha: detRow.fecha, hora: detRow.hora, registros: String(detRow.validos != null ? detRow.validos : 0) }
-      : { nombre: "—", valor: "—", fecha: "—", hora: "—", registros: "0" };
+      ? { nombre: detRow.nombre, valor: fmt(detRow.valor), fecha: detRow.fecha, hora: detRow.hora, registros: String(detRow.validos != null ? detRow.validos : 0), tipo: detRow.tipo || "Pago a Terceros Múltiple" }
+      : { nombre: "—", valor: "—", fecha: "—", hora: "—", registros: "0", tipo: "—" };
 
     return {
       pmList: S.pmView === "list",
@@ -2234,7 +2720,7 @@ class Component extends DCLogic {
       pmUpload: S.pmView === "upload",
       pmConfirm: S.pmView === "confirm",
       pmDetail: S.pmView === "detail",
-      detailNombre: detail.nombre, detailValor: detail.valor, detailFecha: detail.fecha, detailHora: detail.hora, detailRegistros: detail.registros,
+      detailNombre: detail.nombre, detailValor: detail.valor, detailFecha: detail.fecha, detailHora: detail.hora, detailRegistros: detail.registros, detailTipo: detail.tipo,
       detailApproved: detApproved, detailRejected: !detApproved,
       pmExportPdf: () => this.showToast({ kind: "info", title: "Exportando PDF", description: "Generando el soporte del pago…" }),
       pmRows: pmRowsPaged,
@@ -2244,14 +2730,15 @@ class Component extends DCLogic {
       pmSelNombre: selRow ? selRow.nombre : "",
       pmTipoOptions: TIPOS,
       pmFechaOptions: ["Hoy", "Últimos 7 días", "Últimos 30 días", "Este mes"],
-      pmTipo: S.pmTipo, pmNombre: S.pmNombre, pmPgp: S.pmPgp, pmFile: S.pmFile,
+      pmTipo: S.pmTipo, pmNombre: S.pmNombre, pmPgp: S.pmPgp, pmFecha: S.pmFecha, pmFechaVal: S.pmFecha || "", pmFile: S.pmFile,
       pmHasFile: !!S.pmFile, pmNoFile: !S.pmFile,
-      confirmNombre: confirmRow.nombre, confirmValor: confirmRow.valor, confirmFecha: confirmRow.fecha, confirmHora: confirmRow.hora, confirmRegistros: confirmRow.registros,
+      confirmNombre: confirmRow.nombre, confirmValor: confirmRow.valor, confirmFecha: confirmRow.fecha, confirmHora: confirmRow.hora, confirmRegistros: confirmRow.registros, confirmTipo: confirmRow.tipo,
 
       pmGoUpload: () => this.setState({ pmView: "upload" }),
       pmGoList: () => this.setState({ pmView: "list" }),
-      pmCancelUpload: () => this.setState({ pmView: "list", pmTipo: "", pmNombre: "", pmPgp: false, pmFile: "" }),
+      pmCancelUpload: () => this.setState({ pmView: "list", pmTipo: "", pmNombre: "", pmPgp: false, pmFecha: "", pmFile: "" }),
       pmSetTipo: (e) => this.setState({ pmTipo: e.target.value }),
+      pmSetFecha: (e) => this.setState({ pmFecha: e && e.target ? e.target.value : "" }),
       pmSetNombre: (e) => this.setState({ pmNombre: e.target.value }),
       pmTogglePgp: () => this.setState((s) => ({ pmPgp: !s.pmPgp })),
       pmPickFile: (e) => { const f = e && e.target && e.target.files && e.target.files[0]; if (f) this.setState((s) => ({ pmFile: f.name, pmNombre: s.pmNombre || f.name.replace(/\.[^.]+$/, "") })); },
@@ -2269,9 +2756,9 @@ class Component extends DCLogic {
         const valido = ext === "csv" || ext === "xlsx" || ext === "xls" || ext === "txt";
         const id = S.pmNextId;
         const row = valido
-          ? { id, nombre: S.pmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 8400000, estado: "cargado", validos: 10, errados: 0 }
-          : { id, nombre: S.pmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 0, estado: "invalido", validos: null, errados: null };
-        this.setState((s) => ({ pmRows: [row, ...s.pmRows], pmNextId: s.pmNextId + 1, pmView: "list", pmTipo: "", pmNombre: "", pmPgp: false, pmFile: "" }));
+          ? { id, nombre: S.pmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 8400000, estado: "cargado", validos: 10, errados: 0, tipo: S.pmTipo }
+          : { id, nombre: S.pmNombre.trim() + "." + ext, fecha: "2026/06/10", hora: "14:35", valor: 0, estado: "invalido", validos: null, errados: null, tipo: S.pmTipo };
+        this.setState((s) => ({ pmRows: [row, ...s.pmRows], pmNextId: s.pmNextId + 1, pmView: "list", pmTipo: "", pmNombre: "", pmPgp: false, pmFecha: "", pmFile: "" }));
         this.showToast(valido ? { kind: "success", title: "Archivo cargado", description: "Listo para ejecutar. Selecciónalo y presiona Ejecutar." } : { kind: "error", title: "Archivo inválido", description: "El formato no es válido. Usa CSV o Excel." });
       },
       pmExecute: () => { if (this.state.pmSel == null) { this.showToast({ kind: "info", title: "Selecciona un archivo", description: "Marca un archivo en estado Cargado para ejecutar." }); return; } this.setState({ pmView: "confirm" }); },
@@ -2285,8 +2772,10 @@ class Component extends DCLogic {
       pmClaveCancel: () => this.setState({ pmClaveOpen: false }),
       pmClaveConfirm: () => {
         const id = this.state.pmSel;
-        this.setState((s) => ({ pmRows: s.pmRows.map((x) => x.id === id ? { ...x, estado: "proceso" } : x), pmClaveOpen: false, pmView: "list", pmSel: null, pmClave: "" }));
-        this.showToast({ kind: "success", title: "Pago masivo enviado", description: "Listo. Tu archivo está en proceso en el banco." });
+        const row = this.state.pmRows.find((x) => x.id === id) || {};
+        const isQr = row.tipo === "Pago para Retiro por QR en Cajero";
+        this.setState((s) => ({ pmRows: s.pmRows.map((x) => x.id === id ? { ...x, estado: "proceso" } : x), pmClaveOpen: false, pmView: "list", pmSel: null, pmClave: "", qrModal: isQr ? "qr" : null }));
+        if (!isQr) this.showToast({ kind: "success", title: "Pago masivo enviado", description: "Listo. Tu archivo está en proceso en el banco." });
       },
     };
   }
@@ -2466,6 +2955,109 @@ class Component extends DCLogic {
       go: (r) => this.go(r),
       goRecaudos: () => this.go("recaudos"),
       goTx: () => this.go("tx"),
+      isTx: isModule && route === "tx",
+      notTx: !(isModule && route === "tx"),
+      showModuleExport: isModule && route !== "movimientos",
+      txPlainList: isModule && route === "tx" && !S.qrView,
+      moduleMain: isModule && !S.qrView && route !== "movimientos",
+      isMovimientos: route === "movimientos",
+      movQuery: S.movQuery || "",
+      movSetQuery: (e) => this.setState({ movQuery: e && e.target ? e.target.value : "" }),
+      movTipoVal: S.movTipo || "",
+      movTipoOpts: ["Pagos a Terceros", "Pago a Terceros Múltiple", "Débitos Automáticos", "Cuentas Maestras", "Pago para Retiro por QR en Cajero"],
+      movSetTipo: (e) => this.setState({ movTipo: e && e.target ? e.target.value : "" }),
+      movPeriodoVal: S.movPeriodo || "",
+      movPeriodoOpts: ["Todos los períodos", "Hoy", "Últimos 7 días", "Últimos 30 días", "Este mes"],
+      movSetPeriodo: (e) => this.setState({ movPeriodo: e && e.target ? e.target.value : "" }),
+      movEstadoVal: S.movEstado || "",
+      movEstadoOpts: [{ value: "", label: "Todos los estados" }, { value: "cargado", label: "Cargado" }, { value: "proceso", label: "En proceso" }, { value: "cancelado", label: "Cancelado" }, { value: "invalido", label: "Inválido" }],
+      movSetEstado: (e) => this.setState({ movEstado: e && e.target ? e.target.value : "" }),
+      movHasFilters: !!((S.movQuery && S.movQuery.trim()) || S.movTipo || (S.movPeriodo && S.movPeriodo !== "Todos los períodos") || S.movEstado),
+      movClear: () => this.setState({ movQuery: "", movTipo: "", movPeriodo: "", movEstado: "" }),
+      movCount: this.movFilteredRows().length,
+      movCountWord: this.movFilteredRows().length === 1 ? "movimiento" : "movimientos",
+      movHasRows: this.movFilteredRows().length > 0,
+      movRowsEmpty: this.movFilteredRows().length === 0,
+      movCloseMenu: () => this.setState({ movRowMenu: null }),
+      movRows: this.movFilteredRows().map((r, i) => {
+        const m = this.pmMeta(r.estado);
+        const dot = ({ success: "var(--aqua-500)", danger: "var(--danger)", neutral: "var(--neutral-400)", blue: "var(--blue-500)" })[m.tone] || "var(--aqua-500)";
+        const TIPO_ICON = { "Pago para Retiro por QR en Cajero": "qr-code", "Débitos Automáticos": "repeat", "Cuentas Maestras": "layers", "Pago a Terceros Múltiple": "users", "Pagos a Terceros": "arrow-up-right", "Pagos a Terceros Múltiple": "users" };
+        const closeMenu = () => this.setState({ movRowMenu: null });
+        return { ...r, estadoLabel: m.label, estadoDot: dot, isQr: r.tipo === "Pago para Retiro por QR en Cajero",
+          tipoIcon: TIPO_ICON[r.tipo] || "arrow-up-right",
+          menuOpen: S.movRowMenu === i,
+          menu: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState((s) => ({ movRowMenu: s.movRowMenu === i ? null : i })); },
+          onVerQR: () => this.setState({ qrModal: "qr" }),
+          onAlert: () => this.showToast({ kind: "info", title: "Detalle del movimiento", description: r.beneficiario + " · " + r.valor + " · " + m.label + "." }),
+          onRefresh: () => { closeMenu(); this.showToast({ kind: "info", title: "Actualizando", description: "Refrescando el estado del movimiento…" }); },
+          onEdit: () => { closeMenu(); this.showToast({ kind: "info", title: "Editar", description: "Edita los datos del movimiento." }); },
+          onDoc: () => { closeMenu(); this.showToast({ kind: "info", title: "Soporte", description: "Descargando el soporte del movimiento…" }); },
+          onBlock: () => { closeMenu(); this.showToast({ kind: "info", title: "Movimiento anulado", description: "El movimiento fue anulado." }); } };
+      }),
+      txQrFlow: isModule && route === "tx" && !!S.qrView,
+      // ===== Flujo Retiro Cajero QR (Transacciones › Carga de Archivos) =====
+      qrCargarView: S.qrView === "cargar",
+      qrResultadoView: S.qrView === "resultado",
+      qrTablaView: S.qrView === "tabla",
+      qrTipoVal: S.qrTipo || "", qrNombreVal: S.qrNombre || "", qrEncripVal: S.qrEncrip || "", qrArchivoVal: S.qrArchivo || "", qrFechaVal: S.qrFecha || "2026/06/16",
+      qrNoFile: !S.qrArchivo, qrHasFile: !!S.qrArchivo,
+      qrClearFile: () => this.setState({ qrArchivo: "" }),
+      qrDragOver: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+      qrDrop: (e) => { if (e && e.preventDefault) e.preventDefault(); const f = e && e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) this.setState((s) => ({ qrArchivo: f.name, qrNombre: s.qrNombre || f.name.replace(/\.[^.]+$/, "") })); },
+      qrTipoOpts: ["AI: Cheques de Gerencia", "Beneficiarios Cuentas Maestras", "Cuentas Maestras - Sin Plantilla", "Retiro Cajero QR", "Pagos Destino AVAL", "Pagos Destino Banco Popular"],
+      qrEncripOpts: ["PGP"],
+      txGoCargar: () => this.setState({ qrView: "cargar", qrTipo: "", qrNombre: "", qrEncrip: "", qrArchivo: "" }),
+      qrSetTipo: (e) => this.setState({ qrTipo: e && e.target ? e.target.value : "" }),
+      qrSetNombre: (e) => this.setState({ qrNombre: e && e.target ? e.target.value : "" }),
+      qrSetEncrip: (e) => this.setState({ qrEncrip: e && e.target ? e.target.value : "" }),
+      qrBrowse: () => { const el = document.getElementById("qr-file-input"); if (el) el.click(); },
+      qrBrowseMobile: () => { const el = document.getElementById("qrm-file-input"); if (el) el.click(); },
+      qrPickFile: (e) => { const f = e && e.target && e.target.files && e.target.files[0]; if (f) this.setState((s) => ({ qrArchivo: f.name, qrNombre: s.qrNombre || f.name.replace(/\.[^.]+$/, "") })); },
+      qrCancelCargar: () => this.setState({ qrView: null }),
+      qrBackTabla: () => this.setState({ qrView: "tabla" }),
+      qrCargar: () => {
+        if (!this.state.qrTipo) { this.showToast({ kind: "error", title: "Selecciona el tipo", description: "Elige el tipo de archivo." }); return; }
+        if (!String(this.state.qrNombre || "").trim()) { this.showToast({ kind: "error", title: "Falta el nombre", description: "Asigna un nombre al archivo." }); return; }
+        if (!this.state.qrArchivo) { this.showToast({ kind: "error", title: "Falta el archivo", description: "Selecciona el archivo a cargar." }); return; }
+        this.setState({ qrView: "resultado" });
+      },
+      qrFinalizar: () => this.setState({ qrView: "tabla" }),
+      qrCloseRowMenu: () => this.setState({ qrRowMenu: null }),
+      qrFiltroEstadoOpts: ["Todos los estados", "Cargado", "Anulado"],
+      qrFiltroEstadoVal: S.qrFiltroEstado || "",
+      qrSetFiltroEstado: (e) => this.setState({ qrFiltroEstado: e && e.target ? e.target.value : "" }),
+      qrFiltroValorOpts: ["Cualquier valor", "Menos de $1.000.000", "$1.000.000 – $10.000.000", "Más de $10.000.000"],
+      qrFiltroValorVal: S.qrFiltroValor || "",
+      qrSetFiltroValor: (e) => this.setState({ qrFiltroValor: e && e.target ? e.target.value : "" }),
+      qrFiltrar: () => this.showToast({ kind: "info", title: "Filtros aplicados", description: "Mostrando los registros que coinciden con los filtros." }),
+      qrRows: [
+        { ben: "Carlos Andrés Ruiz", id: "1.020.304.050", val: "$ 5.000.000" },
+        { ben: "María Fernanda Gómez", id: "52.118.940", val: "$ 1.250.000" },
+        { ben: "Distribuidora Andina S.A.S", id: "900.123.456", val: "$ 8.400.000" },
+        { ben: "Jorge Luis Patiño", id: "79.554.201", val: "$ 320.000" },
+      ].map((d, idx) => { const i = idx + 1; return { id: i, tipo: S.qrTipo || "Retiro Cajero QR", tipoIcon: "qr-code", fecha: "2026/05/20", valor: d.val, beneficiario: d.ben, identificacion: d.id, menuOpen: S.qrRowMenu === i, menu: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState((s) => ({ qrRowMenu: s.qrRowMenu === i ? null : i })); }, estadoLabel: "Cargado" }; }),
+      qrModalQR: S.qrModal === "qr",
+      qrModalAnular: S.qrModal === "anular",
+      qrModalQRDesk: S.qrModal === "qr" && !S.mobileOpen,
+      qrModalAnularDesk: S.qrModal === "anular" && !S.mobileOpen,
+      qrModalQRMobile: S.qrModal === "qr" && !!S.mobileOpen,
+      qrModalAnularMobile: S.qrModal === "anular" && !!S.mobileOpen,
+      qrAnularArchivo: S.qrAnularArchivo || "PAGO20251",
+      qrVerQR: () => this.setState({ qrModal: "qr" }),
+      qrCloseModal: () => this.setState({ qrModal: null }),
+      qrCopyQR: () => this.showToast({ kind: "success", title: "QR copiado", description: "Pega el QR para usarlo de inmediato." }),
+      qrCopyLink: () => this.showToast({ kind: "success", title: "Link copiado", description: "El enlace del QR se copió al portapapeles." }),
+      qrShareOpts: ["Compartir por correo", "Compartir por mensaje"],
+      qrShareVal: S.qrShare || "",
+      qrSetShare: (e) => this.setState({ qrShare: e && e.target ? e.target.value : "" }),
+      qrShareSend: () => { const v = this.state.qrShare; if (!v) { this.showToast({ kind: "info", title: "Selecciona un medio", description: "Elige correo o mensaje para compartir." }); return; } this.showToast({ kind: "success", title: "QR enviado", description: v === "Compartir por mensaje" ? "Enviamos el QR por mensaje al beneficiario." : "Enviamos el QR por correo al beneficiario." }); },
+      qrReenviar: () => { this.setState({ qrRowMenu: null }); this.showToast({ kind: "info", title: "QR reenviado", description: "El sistema enviará al beneficiario un correo y mensaje con esta información." }); },
+      qrEditar: () => { this.setState({ qrRowMenu: null }); this.showToast({ kind: "info", title: "Editar registro", description: "Edición del registro del beneficiario." }); },
+      qrDocInvalido: () => { this.setState({ qrRowMenu: null }); this.showToast({ kind: "error", title: "Documento inválido", description: "Documento cargado en formato inválido." }); },
+      qrEliminarBenef: () => { this.setState({ qrRowMenu: null }); this.showToast({ kind: "info", title: "Registro eliminado", description: "Se eliminó el registro del beneficiario." }); },
+      qrAnularOpen: () => this.setState({ qrModal: "anular", qrAnularArchivo: "PAGO20251", qrRowMenu: null }),
+      qrConfirmAnular: () => { this.setState({ qrModal: null }); this.showToast({ kind: "success", title: "Código QR anulado", description: "El código QR del archivo fue anulado." }); },
       goConfig: () => this.go("config"),
       saveConfig: () => this.showToast({ kind: "success", title: "Cambios guardados", description: "Tu configuración se actualizó." }),
       switchBank: () => { this.setState({ accountOpen: false }); this.showToast({ kind: "info", title: "Cambiar banco", description: "Selecciona otra entidad del holding." }); },
